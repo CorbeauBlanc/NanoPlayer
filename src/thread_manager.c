@@ -20,27 +20,47 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <pthread.h>
 #include "nanoplayer.h"
 
-void	wait_time(unsigned int lenght)
+t_stopcond	stop;
+
+void		*count_time(void *arg)
 {
-	sleep(lenght);
+	t_timemutex *time = arg;
+	int			flag = 0;
+	
+	while (!flag)
+	{
+		pthread_mutex_lock(&time->mut_time);
+		if (time->val)
+			time->val--;
+		pthread_mutex_unlock(&time->mut_time);
+		sleep(1);
+		flag = (time->val == 0);
+	}
+	pthread_cond_signal(&stop.cond_stop);
+	pthread_exit(NULL);
 }
 
-int		new_proc()
+void		wait_time(unsigned int val)
 {
-	pid_t	pid;
-	FILE	*f_nanoplayer;
+	pthread_t	count_thread;
+	t_timemutex time;
 	
-	if ((pid = fork()) == -1)
-		exit_proc_error();
-	else if (pid != 0)
-	{
-		if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
-			exit_file_error("fopen");
-		fprintf(f_nanoplayer, "%d", (int)pid);
-		fclose(f_nanoplayer);
-		return (0);
-	}
-	return (1);
+	time.val = val;
+	pthread_create(&count_thread, NULL, count_time, &time);
+	pthread_mutex_lock(&stop.mut_stop);
+	pthread_cond_wait(&stop.cond_stop, &stop.mut_stop);
+	pthread_mutex_unlock(&stop.mut_stop);
+}
+
+void		write_pid()
+{
+	FILE	*f_nanoplayer;
+
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
+		exit_file_error("fopen");
+	fprintf(f_nanoplayer, "%d", (int)getpid());
+	fclose(f_nanoplayer);
 }

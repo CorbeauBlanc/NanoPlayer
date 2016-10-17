@@ -19,13 +19,27 @@
 #ifndef NANOPLAYER_H
 # define NANOPLAYER_H
 # include "fmod.h"
+# include <pthread.h>
+
+typedef	struct		s_stopcond
+{
+	pthread_cond_t	cond_stop;
+	pthread_mutex_t	mut_stop;
+}					t_stopcond;
+
+typedef	struct		s_timemutex
+{
+	unsigned int	val;
+	pthread_mutex_t	mut_time;
+}					t_timemutex;
 
 void		exit_FMOD_error(FMOD_RESULT res);
 void		exit_proc_error();
 void		exit_file_error(char *fct);
+void		exit_memory_error();
 
 void		wait_time(unsigned int lenght);
-int			new_proc();
+void		write_pid();
 
 FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);

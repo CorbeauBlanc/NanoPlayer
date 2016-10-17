@@ -38,7 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/errors.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/music_manager.o \
-	${OBJECTDIR}/src/proc_manager.o
+	${OBJECTDIR}/src/thread_manager.o
 
 
 # C Compiler Flags
@@ -80,10 +80,10 @@ ${OBJECTDIR}/src/music_manager.o: src/music_manager.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/music_manager.o src/music_manager.c
 
-${OBJECTDIR}/src/proc_manager.o: src/proc_manager.c
+${OBJECTDIR}/src/thread_manager.o: src/thread_manager.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/proc_manager.o src/proc_manager.c
+	$(COMPILE.c) -O2 -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/thread_manager.o src/thread_manager.c
 
 # Subprojects
 .build-subprojects:

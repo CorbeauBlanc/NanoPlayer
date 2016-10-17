@@ -21,13 +21,13 @@
 #include <errno.h>
 #include "fmod.h"
 
-void exit_FMOD_error(FMOD_RESULT res)
+void	exit_FMOD_error(FMOD_RESULT res)
 {
 	fprintf(stderr, "NanoPlayer : FMOD : [%d]\n", res);
 	exit(EXIT_FAILURE);
 }
 
-void exit_proc_error()
+void	exit_proc_error()
 {
 	char	*err = (errno == ENOMEM ? "Not enough space" :
 									"Resource temporarily unavailable");
@@ -35,8 +35,14 @@ void exit_proc_error()
 	exit(EXIT_FAILURE);
 }
 
-void exit_file_error(char *fct)
+void	exit_file_error(char *fct)
 {
 	fprintf(stderr, "NanoPlayer : %s : %d\n", fct, errno);
+	exit(EXIT_FAILURE);
+}
+
+void	exit_memory_error()
+{
+	fprintf(stderr, "NanoPlayer : malloc : %d\n", errno);
 	exit(EXIT_FAILURE);
 }
