@@ -20,6 +20,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
 #include "fmod.h"
 #include "nanoplayer.h"
 
@@ -35,7 +38,20 @@ int main(int argc, char** argv)
 //
 //	FMOD_System_Close(system);
 //	FMOD_System_Release(system);
-
+	
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		init_handler();
+		while(1);
+	}
+	else
+	{
+		printf("|\nV\n");
+		sleep(3);
+		kill(pid, SIGUSR1);
+		wait(NULL);
+	}
 	exit(EXIT_SUCCESS);
 }
 

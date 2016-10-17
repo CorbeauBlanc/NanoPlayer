@@ -16,37 +16,35 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef NANOPLAYER_H
-# define NANOPLAYER_H
-# include "fmod.h"
-# include <pthread.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include "nanoplayer.h"
 
-typedef	struct		s_stopcond
+void	write_pid()
 {
-	pthread_cond_t	cond_stop;
-	pthread_mutex_t	mut_stop;
-}					t_stopcond;
+	FILE	*f_nanoplayer;
 
-typedef	struct		s_timemutex
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
+		exit_file_error("fopen");
+	fprintf(f_nanoplayer, "%d\n", (int)getpid());
+	fclose(f_nanoplayer);
+}
+
+void	sig_handler(int sig)
 {
-	unsigned int	val;
-	pthread_mutex_t	mut_time;
-}					t_timemutex;
+	printf("test\n");
+	exit(EXIT_SUCCESS);
+}
 
-typedef struct sigaction t_sigaction;
-
-void		exit_FMOD_error(FMOD_RESULT res);
-void		exit_proc_error();
-void		exit_file_error(char *fct);
-void		exit_memory_error();
-
-void		wait_time(unsigned int lenght);
-void		write_pid();
-void		init_handler();
-
-FMOD_SYSTEM	*create_system();
-FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
-void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
-
-#endif /* NANOPLAYER_H */
-
+void	init_handler()
+{
+	t_sigaction *init;
+	if (!(init = (t_sigaction*)malloc(sizeof(t_sigaction))))
+		exit_memory_error();
+	init->__sigaction_handler = &sig_handler;
+	init->sa_flags = 0;
+	sigemptyset(init->sa_mask);
+	sigaction(SIGUSR1, init, NULL);
+}

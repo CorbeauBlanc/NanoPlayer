@@ -18,9 +18,6 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <pthread.h>
 #include "nanoplayer.h"
 
 t_stopcond	stop;
@@ -53,14 +50,4 @@ void		wait_time(unsigned int val)
 	pthread_mutex_lock(&stop.mut_stop);
 	pthread_cond_wait(&stop.cond_stop, &stop.mut_stop);
 	pthread_mutex_unlock(&stop.mut_stop);
-}
-
-void		write_pid()
-{
-	FILE	*f_nanoplayer;
-
-	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
-		exit_file_error("fopen");
-	fprintf(f_nanoplayer, "%d", (int)getpid());
-	fclose(f_nanoplayer);
 }

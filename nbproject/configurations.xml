@@ -21,6 +21,7 @@
         <itemPath>src/errors.c</itemPath>
         <itemPath>src/main.c</itemPath>
         <itemPath>src/music_manager.c</itemPath>
+        <itemPath>src/proc_manager.c</itemPath>
         <itemPath>src/thread_manager.c</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -95,6 +96,8 @@
       </item>
       <item path="src/music_manager.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="src/proc_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/thread_manager.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
@@ -159,6 +162,8 @@
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/music_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/proc_manager.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/thread_manager.c" ex="false" tool="0" flavor2="0">
       </item>
