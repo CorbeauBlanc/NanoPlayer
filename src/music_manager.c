@@ -58,3 +58,39 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	wait_time(lenght);
 	FMOD_Sound_Release(snd);
 }
+
+void		music_pause() {}
+void		music_unpause() {}
+void		music_next() {}
+void		music_prev() {}
+void		music_stop() {}
+void		music_open() {}
+void		music_volume_up() {}
+void		music_volume_down() {}
+
+t_operation	*create_operation(t_action action, void (*function)(void))
+{
+	t_operation	*tmp;
+	if (!(tmp = (t_operation*)malloc(sizeof(t_operation))))
+		exit_memory_error();
+	tmp->action = action;
+	tmp->function = function;
+	return (tmp);
+}
+
+t_operation	**init_tab_operations()
+{
+	t_operation	**tab;
+	
+	if (!(tab = (t_operation**)malloc(sizeof(*tab) * 8)))
+		exit_memory_error();
+	tab[0] = create_operation(PAUSE, music_pause);
+	tab[1] = create_operation(PLAY, music_unpause);
+	tab[2] = create_operation(NEXT, music_next);
+	tab[3] = create_operation(PREV, music_prev);
+	tab[4] = create_operation(STOP, music_stop);
+	tab[5] = create_operation(OPEN, music_open);
+	tab[6] = create_operation(VOLUP, music_volume_up);
+	tab[7] = create_operation(VOLDOWN, music_volume_down);
+	return (tab);
+}

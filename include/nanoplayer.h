@@ -27,6 +27,11 @@
 # include <unistd.h>
 # include <pthread.h>
 
+typedef enum		e_action
+{
+	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOLUP, VOLDOWN
+}					t_action;
+
 typedef	struct		s_stopcond
 {
 	pthread_cond_t	cond_stop;
@@ -45,12 +50,13 @@ typedef struct		s_chanmutex
 	pthread_mutex_t	mut;
 }					t_chanmutex;
 
-typedef struct		sigaction t_sigaction;
-
-typedef enum		action
+typedef	struct		s_operation
 {
-	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOLUP, VOLDOWN
-};
+	t_action		action;
+	void			(*function)(void);
+}					t_operation;
+
+typedef struct		sigaction t_sigaction;
 
 void		exit_FMOD_error(FMOD_RESULT res);
 void		exit_proc_error();
@@ -64,6 +70,7 @@ void		init_handler();
 FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
 void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
+t_operation	**init_tab_operations();
 
 #endif /* NANOPLAYER_H */
 

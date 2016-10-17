@@ -31,7 +31,25 @@ void	write_pid()
 
 void	*sig_manager(void *arg)
 {
-	
+	FILE	*f_nanoplayer;
+	int		buf, i = -1;
+	char	c;
+	t_operation	**tab;
+
+	(void)arg;
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
+		exit_file_error("fopen");
+	while ((buf = fgetc(f_nanoplayer)) != '\n' && buf != EOF);
+	c = (char)fgetc(f_nanoplayer);
+	if (c == EOF)
+		exit_file_error("fgetc");
+	tab = init_tab_operations();
+	while (++i != 8 && tab[i]->action != (unsigned int)atoi(&c));
+	if (tab[i]->action != (unsigned int)atoi(&c))
+		tab[i]->function();
+	else
+		exit(EXIT_FAILURE);
+	return (NULL);
 }
 
 void	sig_handler(int sig)
