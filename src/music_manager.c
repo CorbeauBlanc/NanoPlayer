@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <stdlib.h>
-#include "fmod.h"
 #include "nanoplayer.h"
+
+t_chanmutex	channel;
 
 FMOD_SYSTEM	*create_system()
 {
@@ -50,8 +50,11 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	unsigned int	lenght;
 	FMOD_Sound_GetLength(snd, &lenght, FMOD_TIMEUNIT_MS);
 	lenght = (unsigned int)(lenght / 1000);
-	if ((res = FMOD_System_PlaySound(sys, snd, NULL, 0, NULL)) != FMOD_OK)
+	pthread_mutex_lock(&channel.mut);
+	if ((res = FMOD_System_PlaySound(sys, snd, NULL, 0, &channel.val))
+		 != FMOD_OK)
 		exit_FMOD_error(res);
+	pthread_mutex_unlock(&channel.mut);
 	wait_time(lenght);
 	FMOD_Sound_Release(snd);
 }

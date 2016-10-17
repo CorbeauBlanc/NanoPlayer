@@ -16,14 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <unistd.h>
-#include "fmod.h"
+#define _POSIX_SOURCE
 #include "nanoplayer.h"
 
 int main(int argc, char** argv)
@@ -38,20 +31,7 @@ int main(int argc, char** argv)
 //
 //	FMOD_System_Close(system);
 //	FMOD_System_Release(system);
-	
-	pid_t pid = fork();
-	if (pid == 0)
-	{
-		init_handler();
-		while(1);
-	}
-	else
-	{
-		printf("|\nV\n");
-		sleep(3);
-		kill(pid, SIGUSR1);
-		wait(NULL);
-	}
+
 	exit(EXIT_SUCCESS);
 }
 

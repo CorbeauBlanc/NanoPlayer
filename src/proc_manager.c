@@ -16,10 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
+#define _POSIX_SOURCE
 #include "nanoplayer.h"
 
 void	write_pid()
@@ -32,8 +29,14 @@ void	write_pid()
 	fclose(f_nanoplayer);
 }
 
+void	*sig_manager(void *arg)
+{
+	
+}
+
 void	sig_handler(int sig)
 {
+	(void)sig;
 	printf("test\n");
 	exit(EXIT_SUCCESS);
 }
@@ -43,8 +46,8 @@ void	init_handler()
 	t_sigaction *init;
 	if (!(init = (t_sigaction*)malloc(sizeof(t_sigaction))))
 		exit_memory_error();
-	init->__sigaction_handler = &sig_handler;
+	init->sa_handler = &sig_handler;
 	init->sa_flags = 0;
-	sigemptyset(init->sa_mask);
+	sigemptyset(&init->sa_mask);
 	sigaction(SIGUSR1, init, NULL);
 }

@@ -19,6 +19,12 @@
 #ifndef NANOPLAYER_H
 # define NANOPLAYER_H
 # include "fmod.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <unistd.h>
 # include <pthread.h>
 
 typedef	struct		s_stopcond
@@ -33,7 +39,18 @@ typedef	struct		s_timemutex
 	pthread_mutex_t	mut_time;
 }					t_timemutex;
 
-typedef struct sigaction t_sigaction;
+typedef struct		s_chanmutex
+{
+	FMOD_CHANNEL	*val;
+	pthread_mutex_t	mut;
+}					t_chanmutex;
+
+typedef struct		sigaction t_sigaction;
+
+typedef enum		action
+{
+	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOLUP, VOLDOWN
+};
 
 void		exit_FMOD_error(FMOD_RESULT res);
 void		exit_proc_error();
