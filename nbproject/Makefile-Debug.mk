@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/main.o
+	${OBJECTDIR}/src/errors.o \
+	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/music_manager.o
 
 
 # C Compiler Flags
@@ -62,10 +64,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nanoplayer: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/nanoplayer ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/src/errors.o: src/errors.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/errors.o src/errors.c
+
 ${OBJECTDIR}/src/main.o: src/main.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.c
+
+${OBJECTDIR}/src/music_manager.o: src/music_manager.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/music_manager.o src/music_manager.c
 
 # Subprojects
 .build-subprojects:
