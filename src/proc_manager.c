@@ -16,20 +16,31 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef NANOPLAYER_H
-# define NANOPLAYER_H
-# include "fmod.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include "nanoplayer.h"
 
-void		exit_FMOD_error(FMOD_RESULT res);
-void		exit_proc_error();
-void		exit_file_error(char *fct);
+void	wait_time(unsigned int lenght)
+{
+	sleep(lenght);
+}
 
-void		wait_time(unsigned int lenght);
-int			new_proc();
-
-FMOD_SYSTEM	*create_system();
-FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
-void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
-
-#endif /* NANOPLAYER_H */
-
+int		new_proc()
+{
+	pid_t	pid;
+	FILE	*f_nanoplayer;
+	
+	if ((pid = fork()) == -1)
+		exit_proc_error();
+	else if (pid != 0)
+	{
+		if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
+			exit_file_error("fopen");
+		fprintf(f_nanoplayer, "%d", (int)pid);
+		fclose(f_nanoplayer);
+		return (0);
+	}
+	return (1);
+}

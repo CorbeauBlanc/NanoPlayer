@@ -24,7 +24,10 @@
                 </confElem>
             </confList>
             <formatting>
-                <project-formatting-style>false</project-formatting-style>
+                <project-formatting-style>true</project-formatting-style>
+                <c-style>Default_0|42</c-style>
+                <cpp-style>ANSI|ANSI</cpp-style>
+                <header-style>GNU_0|42</header-style>
             </formatting>
         </data>
     </configuration>

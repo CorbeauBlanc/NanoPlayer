@@ -37,7 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/errors.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/music_manager.o
+	${OBJECTDIR}/src/music_manager.o \
+	${OBJECTDIR}/src/proc_manager.o
 
 
 # C Compiler Flags
@@ -78,6 +79,11 @@ ${OBJECTDIR}/src/music_manager.o: src/music_manager.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/music_manager.o src/music_manager.c
+
+${OBJECTDIR}/src/proc_manager.o: src/proc_manager.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/proc_manager.o src/proc_manager.c
 
 # Subprojects
 .build-subprojects:

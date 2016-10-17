@@ -17,14 +17,8 @@
  */
 
 #include <stdlib.h>
-#include <unistd.h>
 #include "fmod.h"
 #include "nanoplayer.h"
-
-void		wait(unsigned int lenght)
-{
-	sleep(lenght);
-}
 
 FMOD_SYSTEM	*create_system()
 {
@@ -32,9 +26,9 @@ FMOD_SYSTEM	*create_system()
 	FMOD_RESULT res;
 
 	if ((res = FMOD_System_Create(&system)) != FMOD_OK)
-		exit_error(res);
+		exit_FMOD_error(res);
 	if ((res = FMOD_System_Init(system, 2, FMOD_INIT_NORMAL, NULL)) != FMOD_OK)
-		exit_error(res);
+		exit_FMOD_error(res);
 
 	return (system);
 }
@@ -45,7 +39,7 @@ FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys)
 	FMOD_SOUND	*snd;
 	if ((res = FMOD_System_CreateSound(sys, path,FMOD_2D | FMOD_CREATESTREAM,
 										NULL, &snd)) != FMOD_OK)
-		exit_error(res);
+		exit_FMOD_error(res);
 	
 	return (snd);
 }
@@ -57,7 +51,7 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	FMOD_Sound_GetLength(snd, &lenght, FMOD_TIMEUNIT_MS);
 	lenght = (unsigned int)(lenght / 1000);
 	if ((res = FMOD_System_PlaySound(sys, snd, NULL, 0, NULL)) != FMOD_OK)
-		exit_error(res);
-	wait(lenght);
+		exit_FMOD_error(res);
+	wait_time(lenght);
 	FMOD_Sound_Release(snd);
 }

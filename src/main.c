@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include "fmod.h"
 #include "nanoplayer.h"
 
@@ -26,13 +27,22 @@ int main(int argc, char** argv)
 {
 	(void)argc;
 	(void)argv;
-	FMOD_SYSTEM *system = create_system();
-	FMOD_SOUND *sound = create_sound("/home/shiro/Bureau/fmod_test.mp3", system);
+//	FMOD_SYSTEM *system = create_system();
+//	FMOD_SOUND *sound = create_sound("/home/shiro/Bureau/fmod_test.mp3", system);
+//	
+//	play_sound(sound, system);
+//	
+//	FMOD_System_Close(system);
+//	FMOD_System_Release(system);
 	
-	play_sound(sound, system);
+	if (new_proc())
+	{
+		printf("proc fils\n");
+		wait(NULL);
+	}
+	else
+		printf("proc père\n");
 	
-	FMOD_System_Close(system);
-	FMOD_System_Release(system);
 	exit(EXIT_SUCCESS);
 }
 
