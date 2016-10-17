@@ -26,7 +26,10 @@ int main(int argc, char** argv)
 {
 	(void)argc;
 	(void)argv;
+	FMOD_SYSTEM *system = create_system();
+	FMOD_SOUND *sound = create_sound("/home/shiro/Bureau/fmod_test.mp3", system);
 	
+	play_sound(sound, system);
 	
 	FMOD_System_Close(system);
 	FMOD_System_Release(system);
