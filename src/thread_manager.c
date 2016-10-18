@@ -18,34 +18,40 @@
 
 #include "nanoplayer.h"
 
-t_stopcond	stop;
-
-void		*count_time(void *arg)
+void		*count(void *arg)
 {
-	t_timemutex *time = arg;
-	int			flag = 0;
-	
-	while (!flag)
+	FMOD_BOOL		playing = TRUE;
+	FMOD_BOOL		paused = FALSE;
+
+	(void)arg;
+	time_count.val++;
+	while (playing && !paused)
 	{
-		pthread_mutex_lock(&time->mut_time);
-		if (time->val)
-			time->val--;
-		pthread_mutex_unlock(&time->mut_time);
-		sleep(1);
-		flag = (time->val == 0);
+		pthread_mutex_lock(&time_count.mut_time);
+		if (playing && !paused && time_count.val)
+			time_count.val--;
+		pthread_mutex_unlock(&time_count.mut_time);
+		pthread_mutex_lock(&channel.mut);
+		FMOD_Channel_IsPlaying(channel.val, &playing);
+		FMOD_Channel_GetPaused(channel.val, &paused);
+		pthread_mutex_unlock(&channel.mut);
+		if (playing && !paused && time_count.val)
+			sleep(1);
 	}
-	pthread_cond_signal(&stop.cond_stop);
+	pthread_cond_broadcast(&stop.cond_stop);
 	pthread_exit(NULL);
 }
 
 void		wait_time(unsigned int val)
 {
 	pthread_t	count_thread;
-	t_timemutex time;
-	
-	time.val = val;
-	pthread_create(&count_thread, NULL, count_time, &time);
-	pthread_mutex_lock(&stop.mut_stop);
-	pthread_cond_wait(&stop.cond_stop, &stop.mut_stop);
-	pthread_mutex_unlock(&stop.mut_stop);
+
+	time_count.val = val;
+	pthread_create(&count_thread, NULL, count, NULL);
+	while (time_count.val)
+	{
+		pthread_mutex_lock(&stop.mut_stop);
+		pthread_cond_wait(&stop.cond_stop, &stop.mut_stop);
+		pthread_mutex_unlock(&stop.mut_stop);
+	}
 }

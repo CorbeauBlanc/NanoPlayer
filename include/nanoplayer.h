@@ -18,6 +18,8 @@
 
 #ifndef NANOPLAYER_H
 # define NANOPLAYER_H
+# define TRUE 1
+# define FALSE 0
 # include "fmod.h"
 # include <stdio.h>
 # include <stdlib.h>
@@ -58,14 +60,28 @@ typedef	struct		s_operation
 
 typedef struct		sigaction t_sigaction;
 
+t_stopcond	stop;
+t_timemutex time_count;
+t_chanmutex	channel;
+
 void		exit_FMOD_error(FMOD_RESULT res);
 void		exit_proc_error();
 void		exit_file_error(char *fct);
 void		exit_memory_error();
 
+void		*count(void *arg);
 void		wait_time(unsigned int lenght);
-void		write_pid();
-void		init_handler();
+void		write_pid(void);
+void		init_handler(void);
+
+void		music_pause();
+void		music_unpause();
+void		music_next();
+void		music_prev();
+void		music_stop();
+void		music_open();
+void		music_volume_up();
+void		music_volume_down();
 
 FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);

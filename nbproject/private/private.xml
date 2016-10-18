@@ -7,8 +7,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/main.c</file>
+            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/include/nanoplayer.h</file>
             <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/proc_manager.c</file>
+            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/thread_manager.c</file>
+            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/errors.c</file>
+            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/main.c</file>
+            <file>file:/home/shiro/NetBeansProjects/NanoPlayer/src/music_manager.c</file>
         </group>
     </open-files>
 </project-private>

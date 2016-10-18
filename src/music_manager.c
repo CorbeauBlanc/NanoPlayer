@@ -18,8 +18,6 @@
 
 #include "nanoplayer.h"
 
-t_chanmutex	channel;
-
 FMOD_SYSTEM	*create_system()
 {
 	FMOD_SYSTEM *system;
@@ -59,8 +57,20 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	FMOD_Sound_Release(snd);
 }
 
-void		music_pause() {}
-void		music_unpause() {}
+void		music_pause()
+{
+	pthread_mutex_lock(&channel.mut);
+	FMOD_Channel_SetPaused(channel.val, TRUE);
+	pthread_mutex_unlock(&channel.mut);
+}
+
+void		music_unpause()
+{
+	pthread_mutex_lock(&channel.mut);
+	FMOD_Channel_SetPaused(channel.val, FALSE);
+	pthread_mutex_unlock(&channel.mut);
+	count(NULL);
+}
 void		music_next() {}
 void		music_prev() {}
 void		music_stop() {}
