@@ -46,3 +46,9 @@ void	exit_memory_error()
 	fprintf(stderr, "NanoPlayer : malloc : %d\n", errno);
 	exit(EXIT_FAILURE);
 }
+
+void	exit_thread_error()
+{
+	fprintf(stderr, "NanoPlayer : pthread_create : %d\n", errno);
+	exit(EXIT_FAILURE);
+}

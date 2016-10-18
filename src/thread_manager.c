@@ -47,7 +47,8 @@ void		wait_time(unsigned int val)
 	pthread_t	count_thread;
 
 	time_count.val = val;
-	pthread_create(&count_thread, NULL, count, NULL);
+	if(pthread_create(&count_thread, NULL, count, NULL) == -1)
+		exit_thread_error();
 	while (time_count.val)
 	{
 		pthread_mutex_lock(&stop.mut_stop);

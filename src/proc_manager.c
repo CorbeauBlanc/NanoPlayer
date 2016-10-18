@@ -54,8 +54,11 @@ void	*sig_manager(void *arg)
 
 void	sig_handler(int sig)
 {
+	pthread_t	*manager;
+	
 	(void)sig;
-	printf("test\n");
+	if (pthread_create(manager, NULL, sig_manager, NULL) == -1)
+		exit_thread_error();
 	exit(EXIT_SUCCESS);
 }
 

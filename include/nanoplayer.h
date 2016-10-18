@@ -68,6 +68,7 @@ void		exit_FMOD_error(FMOD_RESULT res);
 void		exit_proc_error();
 void		exit_file_error(char *fct);
 void		exit_memory_error();
+void		exit_thread_error();
 
 void		*count(void *arg);
 void		wait_time(unsigned int lenght);
