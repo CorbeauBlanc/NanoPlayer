@@ -74,6 +74,8 @@ void		*count(void *arg);
 void		wait_time(unsigned int lenght);
 void		write_pid(void);
 void		init_handler(void);
+pid_t		get_pid();
+void		send_operation(pid_t pid, char op);
 
 void		music_pause();
 void		music_unpause();

@@ -17,20 +17,43 @@
  */
 
 #define _POSIX_SOURCE
+#include <sys/stat.h>
 #include "nanoplayer.h"
 
 int main(int argc, char** argv)
 {
-	(void)argc;
-	(void)argv;
-	
-	FMOD_SYSTEM *system = create_system();
-	FMOD_SOUND *sound = create_sound("/home/shiro/Bureau/fmod_test.mp3", system);
+	struct stat file_stats;
 
-	play_sound(sound, system);
-	
-	FMOD_System_Close(system);
-	FMOD_System_Release(system);
+	if (argc < 2)
+	{
+		fprintf(stderr, "NanoPlayer : Not enough arguments");
+		exit(EXIT_FAILURE);
+	}
+	if (argv[1][0] == '-')
+	{
+		if (argv[1][1] == 'u')
+			send_operation(get_pid(), '0');
+		else if (argv[1][1] == 'p')
+			send_operation(get_pid(), '1');
+	}
+	else
+	{
+		if (stat(argv[1], &file_stats) < 0)
+		exit_file_error("stat");
+		if (S_ISREG(file_stats.st_mode))
+		{
+			write_pid();
+			init_handler();
+			FMOD_SYSTEM *system = create_system();
+			FMOD_SOUND *sound = create_sound(argv[1], system);
+
+			play_sound(sound, system);
+
+			FMOD_System_Close(system);
+			FMOD_System_Release(system);
+		}
+		remove("/tmp/nanoplayer");
+	}
 	exit(EXIT_SUCCESS);
 }
 

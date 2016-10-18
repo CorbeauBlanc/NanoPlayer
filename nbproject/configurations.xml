@@ -66,6 +66,7 @@
           <linkerDynSerch>
             <pElem>lib</pElem>
           </linkerDynSerch>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibLibItem>fmod</linkerLibLibItem>
             <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
@@ -134,8 +135,10 @@
           <linkerDynSerch>
             <pElem>lib</pElem>
           </linkerDynSerch>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibLibItem>fmod</linkerLibLibItem>
+            <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

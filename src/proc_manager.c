@@ -25,27 +25,45 @@ void	write_pid()
 
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
 		exit_file_error("fopen");
-	fprintf(f_nanoplayer, "%d\n", (int)getpid());
+	fprintf(f_nanoplayer, "%d\n0", (int)getpid());
 	fclose(f_nanoplayer);
+}
+
+pid_t	get_pid()
+{
+	FILE	*f_nanoplayer;
+	pid_t	pid = 0;
+	int		c;
+
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
+		exit_file_error("fopen");
+	while ((c = fgetc(f_nanoplayer)) != '\n' && c != EOF)
+		pid = 10 * pid + (c - '0');
+	if (c == EOF)
+		exit_file_error("fgetc");
+	fclose(f_nanoplayer);
+	return (pid);
 }
 
 void	*sig_manager(void *arg)
 {
-	FILE	*f_nanoplayer;
-	int		buf, i = -1;
-	char	c;
-	t_operation	**tab;
+	FILE			*f_nanoplayer;
+	int				buf, i = -1;
+	unsigned int	op;
+	t_operation		**tab;
 
 	(void)arg;
-	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
 		exit_file_error("fopen");
 	while ((buf = fgetc(f_nanoplayer)) != '\n' && buf != EOF);
-	c = (char)fgetc(f_nanoplayer);
-	if (c == EOF)
+	buf = fgetc(f_nanoplayer);
+	if (buf == EOF)
 		exit_file_error("fgetc");
+	fclose(f_nanoplayer);
+	op = buf - '0';
 	tab = init_tab_operations();
-	while (++i != 8 && tab[i]->action != (unsigned int)atoi(&c));
-	if (tab[i]->action != (unsigned int)atoi(&c))
+	while (++i != 8 && tab[i]->action != op);
+	if (tab[i]->action == op)
 		tab[i]->function();
 	else
 		exit(EXIT_FAILURE);
@@ -57,9 +75,10 @@ void	sig_handler(int sig)
 	pthread_t	*manager;
 	
 	(void)sig;
+	if (!(manager = (pthread_t*)malloc(sizeof(pthread_t))))
+		exit_memory_error();
 	if (pthread_create(manager, NULL, sig_manager, NULL) == -1)
 		exit_thread_error();
-	exit(EXIT_SUCCESS);
 }
 
 void	init_handler()
@@ -71,4 +90,19 @@ void	init_handler()
 	init->sa_flags = 0;
 	sigemptyset(&init->sa_mask);
 	sigaction(SIGUSR1, init, NULL);
+}
+
+void	send_operation(pid_t pid, char op)
+{
+	FILE	*f_nanoplayer;
+
+	int c;
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r+")) == NULL)
+		exit_file_error("fopen");
+	while ((c = fgetc(f_nanoplayer)) != '\n' && c != EOF);
+	if (c == EOF)
+		exit_file_error("fgetc");
+	fputc(op, f_nanoplayer);
+	fclose(f_nanoplayer);
+	kill(pid, SIGUSR1);
 }
