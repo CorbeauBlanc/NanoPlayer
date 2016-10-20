@@ -54,7 +54,20 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 		exit_FMOD_error(res);
 	pthread_mutex_unlock(&channel.mut);
 	wait_time(lenght);
-	FMOD_Sound_Release(snd);
+}
+
+void		read_list(t_list *song)
+{
+	init_handler();
+	FMOD_SYSTEM *system = create_system();
+	FMOD_SOUND *sound = create_sound(song->path, system);
+
+	play_sound(sound, system);
+	
+	FMOD_Sound_Release(sound);
+
+	FMOD_System_Close(system);
+	FMOD_System_Release(system);
 }
 
 void		music_pause()
@@ -87,6 +100,7 @@ void		music_volume()
 {
 	FILE	*f_nanoplayer;
 	float	amount;
+	char	*line;
 	
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
 		exit_file_error("fopen");
@@ -94,10 +108,13 @@ void		music_volume()
 	seek_char('\n', f_nanoplayer);
 	pthread_mutex_lock(&channel.mut);
 	FMOD_Channel_GetVolume(channel.val, &amount);
-	amount += ((float)atoi(get_line(f_nanoplayer)) / 10);
-	FMOD_Channel_SetVolume(channel.val, amount);
+	line = get_line(f_nanoplayer);
+	amount += ((float)atoi(line) / 10);
+	if (amount > 0)
+		FMOD_Channel_SetVolume(channel.val, amount);
 	pthread_mutex_unlock(&channel.mut);
 	fclose(f_nanoplayer);
+	free(line);
 }
 
 t_operation	*create_operation(t_action action, void (*function)(void))
@@ -124,4 +141,13 @@ t_operation	**init_tab_operations()
 	tab[5] = create_operation(OPEN, music_open);
 	tab[6] = create_operation(VOL, music_volume);
 	return (tab);
+}
+
+void		free_tab_operations(t_operation	***tab)
+{
+	int	i = -1;
+	
+	while (++i < 6)
+		free((*tab)[i]);
+	free(*tab);
 }

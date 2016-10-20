@@ -20,6 +20,7 @@
       <logicalFolder name="src" displayName="src" projectFiles="true">
         <itemPath>src/errors.c</itemPath>
         <itemPath>src/file_manager.c</itemPath>
+        <itemPath>src/list_manager.c</itemPath>
         <itemPath>src/main.c</itemPath>
         <itemPath>src/music_manager.c</itemPath>
         <itemPath>src/proc_manager.c</itemPath>
@@ -96,6 +97,8 @@
       </item>
       <item path="src/file_manager.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="src/list_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/music_manager.c" ex="false" tool="0" flavor2="0">
@@ -166,6 +169,8 @@
       <item path="src/errors.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/file_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/list_manager.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>

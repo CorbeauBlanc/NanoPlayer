@@ -16,39 +16,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
+#include "nanoplayer.h"
 
-#include "fmod.h"
-
-void	exit_FMOD_error(FMOD_RESULT res)
+void	insert_cell(t_list **head, char *path)
 {
-	fprintf(stderr, "nanoplayer : FMOD : [%d]\n", res);
-	exit(EXIT_FAILURE);
-}
-
-void	exit_proc_error()
-{
-	perror("nanoplayer : fork ");
-	exit(EXIT_FAILURE);
-}
-
-void	exit_file_error(char *fct)
-{
-	fprintf(stderr, "nanoplayer : %s ", fct);
-	perror("");
-	exit(EXIT_FAILURE);
-}
-
-void	exit_memory_error()
-{
-	perror("nanoplayer : malloc ");
-	exit(EXIT_FAILURE);
-}
-
-void	exit_thread_error()
-{
-	perror("nanoplayer : pthread_create ");
-	exit(EXIT_FAILURE);
+	t_list	*cell;
+	
+	if (!(cell = (t_list*)malloc(sizeof(t_list))))
+		exit_memory_error();
+	cell->path = path;
+	if (*head)
+	{
+		*head = cell;
+		cell->next = NULL;
+		cell->prev = NULL;
+	}
+	else
+	{
+		cell->next = (*head)->next;
+		(*head)->next = cell;
+		cell->prev = (*head);
+		if (cell->next)
+			cell->next->prev = cell;
+	}
 }

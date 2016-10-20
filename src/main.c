@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#define _POSIX_SOURCE
-#include <sys/stat.h>
 #include "nanoplayer.h"
+
+t_list	*list;
 
 char	get_operation(char c)
 {
@@ -32,8 +32,8 @@ char	get_operation(char c)
 
 int		main(int argc, char **argv)
 {
-	struct	stat file_stats;
 	char	op;
+	char	**list_path, **tmp;
 
 	if (argc < 2)
 	{
@@ -47,19 +47,22 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
-		if (stat(argv[1], &file_stats) < 0)
-		exit_file_error("stat");
-		if (S_ISREG(file_stats.st_mode))
+		write_pid();
+		list = NULL;
+		if (is_file(argv[1]))
 		{
-			write_pid();
-			init_handler();
-			FMOD_SYSTEM *system = create_system();
-			FMOD_SOUND *sound = create_sound(argv[1], system);
-
-			play_sound(sound, system);
-
-			FMOD_System_Close(system);
-			FMOD_System_Release(system);
+			insert_cell(&list, argv[1]);
+		}
+		else if (is_dir(argv[1]))
+		{
+			list_path = get_dir_content(argv[1]);
+			tmp = list_path;
+			while(*list_path)
+			{
+				insert_cell(&list, *list_path);
+				list_path++;
+			}
+			free_list_path(&tmp);
 		}
 		remove("/tmp/nanoplayer");
 	}

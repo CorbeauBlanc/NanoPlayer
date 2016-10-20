@@ -59,7 +59,15 @@ typedef	struct		s_operation
 	void			(*function)(void);
 }					t_operation;
 
-typedef struct		sigaction t_sigaction;
+typedef struct		s_list
+{
+	char			*path;
+	struct s_list	*prev;
+	struct s_list	*next;
+	pthread_mutex_t	mut;
+}					t_list;
+
+typedef struct		sigaction	t_sigaction;
 
 t_stopcond	stop;
 t_timemutex time_count;
@@ -71,16 +79,18 @@ void		exit_file_error(char *fct);
 void		exit_memory_error();
 void		exit_thread_error();
 
-void		*count(void *arg);
-void		wait_time(unsigned int lenght);
-void		write_pid(void);
-void		init_handler(void);
-pid_t		get_pid();
-void		send_operation(pid_t pid, char op, char *arg2);
-
 int			seek_char(char c, FILE *stream);
 char		*get_line(FILE *stream);
+int			is_file(char *path);
+int			is_dir(char *path);
 
+void		insert_cell(t_list **head, char *path);
+
+FMOD_SYSTEM	*create_system();
+FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
+void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
+t_operation	**init_tab_operations();
+void		free_tab_operations(t_operation	***tab);
 void		music_pause();
 void		music_unpause();
 void		music_next();
@@ -89,10 +99,14 @@ void		music_stop();
 void		music_open();
 void		music_volume();
 
-FMOD_SYSTEM	*create_system();
-FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
-void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
-t_operation	**init_tab_operations();
+void		*count(void *arg);
+void		wait_time(unsigned int lenght);
+void		write_pid(void);
+void		init_handler(void);
+pid_t		get_pid();
+void		send_operation(pid_t pid, char op, char *arg2);
+void		free_list_path(char ***list);
+char		**get_dir_content(char *path);
 
 #endif /* NANOPLAYER_H */
 

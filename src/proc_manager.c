@@ -68,16 +68,15 @@ void	*sig_manager(void *arg)
 		tab[i]->function();
 	else
 		exit(EXIT_FAILURE);
+	free_tab_operations(&tab);
 	return (NULL);
 }
 
 void	sig_handler(int sig)
 {
-	pthread_t	*manager;
+	pthread_t	*manager = NULL;
 	
 	(void)sig;
-	if (!(manager = (pthread_t*)malloc(sizeof(pthread_t))))
-		exit_memory_error();
 	if (pthread_create(manager, NULL, sig_manager, NULL) == -1)
 		exit_thread_error();
 }
