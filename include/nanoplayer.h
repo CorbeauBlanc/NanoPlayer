@@ -20,7 +20,6 @@
 # define NANOPLAYER_H
 # define TRUE 1
 # define FALSE 0
-# include "fmod.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -29,9 +28,11 @@
 # include <unistd.h>
 # include <pthread.h>
 
+# include "fmod.h"
+
 typedef enum		e_action
 {
-	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOLUP, VOLDOWN
+	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOL
 }					t_action;
 
 typedef	struct		s_stopcond
@@ -75,7 +76,10 @@ void		wait_time(unsigned int lenght);
 void		write_pid(void);
 void		init_handler(void);
 pid_t		get_pid();
-void		send_operation(pid_t pid, char op);
+void		send_operation(pid_t pid, char op, char *arg2);
+
+int			seek_char(char c, FILE *stream);
+char		*get_line(FILE *stream);
 
 void		music_pause();
 void		music_unpause();
@@ -83,8 +87,7 @@ void		music_next();
 void		music_prev();
 void		music_stop();
 void		music_open();
-void		music_volume_up();
-void		music_volume_down();
+void		music_volume();
 
 FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);

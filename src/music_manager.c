@@ -83,8 +83,22 @@ void		music_stop()
 	pthread_mutex_unlock(&time_count.mut_time);
 }
 void		music_open() {}
-void		music_volume_up() {}
-void		music_volume_down() {}
+void		music_volume()
+{
+	FILE	*f_nanoplayer;
+	float	amount;
+	
+	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
+		exit_file_error("fopen");
+	seek_char('\n', f_nanoplayer);
+	seek_char('\n', f_nanoplayer);
+	pthread_mutex_lock(&channel.mut);
+	FMOD_Channel_GetVolume(channel.val, &amount);
+	amount += ((float)atoi(get_line(f_nanoplayer)) / 10);
+	FMOD_Channel_SetVolume(channel.val, amount);
+	pthread_mutex_unlock(&channel.mut);
+	fclose(f_nanoplayer);
+}
 
 t_operation	*create_operation(t_action action, void (*function)(void))
 {
@@ -100,7 +114,7 @@ t_operation	**init_tab_operations()
 {
 	t_operation	**tab;
 	
-	if (!(tab = (t_operation**)malloc(sizeof(*tab) * 8)))
+	if (!(tab = (t_operation**)malloc(sizeof(*tab) * 7)))
 		exit_memory_error();
 	tab[0] = create_operation(PAUSE, music_pause);
 	tab[1] = create_operation(PLAY, music_unpause);
@@ -108,7 +122,6 @@ t_operation	**init_tab_operations()
 	tab[3] = create_operation(PREV, music_prev);
 	tab[4] = create_operation(STOP, music_stop);
 	tab[5] = create_operation(OPEN, music_open);
-	tab[6] = create_operation(VOLUP, music_volume_up);
-	tab[7] = create_operation(VOLDOWN, music_volume_down);
+	tab[6] = create_operation(VOL, music_volume);
 	return (tab);
 }

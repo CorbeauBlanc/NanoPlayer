@@ -20,9 +20,20 @@
 #include <sys/stat.h>
 #include "nanoplayer.h"
 
-int main(int argc, char** argv)
+char	get_operation(char c)
 {
-	struct stat file_stats;
+	char	tab[2][7] = {{'u','p','n','b','s','o','v'},
+						{'0','1','2','3','4','5','6'}};
+	int		i = -1;
+	
+	while(tab[0][++i] != c);
+	return (tab[1][i]);
+}
+
+int		main(int argc, char **argv)
+{
+	struct	stat file_stats;
+	char	op;
 
 	if (argc < 2)
 	{
@@ -31,12 +42,8 @@ int main(int argc, char** argv)
 	}
 	if (argv[1][0] == '-')
 	{
-		if (argv[1][1] == 'u')
-			send_operation(get_pid(), '0');
-		else if (argv[1][1] == 'p')
-			send_operation(get_pid(), '1');
-		else if (argv[1][1] == 's')
-			send_operation(get_pid(), '4');
+		op = get_operation(argv[1][1]);
+		send_operation(get_pid(), op, argc > 2 ? argv[2] : NULL);
 	}
 	else
 	{

@@ -16,40 +16,31 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
+#include "nanoplayer.h"
 
-#include "fmod.h"
-
-void	exit_FMOD_error(FMOD_RESULT res)
+int		seek_char(char c, FILE *stream)
 {
-	fprintf(stderr, "NanoPlayer : FMOD : [%d]\n", res);
-	exit(EXIT_FAILURE);
+	int		i = 0;
+	char	buf;
+	while((buf = fgetc(stream)) != c && buf != EOF)
+		i++;
+	return (i);
 }
 
-void	exit_proc_error()
+char	*get_line(FILE *stream)
 {
-	char	*err = (errno == ENOMEM ? "Not enough space" :
-									"Resource temporarily unavailable");
-	fprintf(stderr, "NanoPlayer : fork : %s\n", err);
-	exit(EXIT_FAILURE);
-}
-
-void	exit_file_error(char *fct)
-{
-	fprintf(stderr, "NanoPlayer : %s : %d\n", fct, errno);
-	exit(EXIT_FAILURE);
-}
-
-void	exit_memory_error()
-{
-	fprintf(stderr, "NanoPlayer : malloc : %d\n", errno);
-	exit(EXIT_FAILURE);
-}
-
-void	exit_thread_error()
-{
-	fprintf(stderr, "NanoPlayer : pthread_create : %d\n", errno);
-	exit(EXIT_FAILURE);
+	char	*line;
+	char	buf;
+	int		i = -1;
+	
+	if (!(line = (char*)malloc(1)))
+		exit_memory_error();
+	while ((buf = fgetc(stream)) != '\n' && buf != EOF)
+	{
+		line[++i] = buf;
+		if (!(line = realloc(line, i + 2)))
+			exit_memory_error();
+	}
+	line[i + 1] = '\0';
+	return (line);
 }

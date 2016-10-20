@@ -25,7 +25,7 @@ void	write_pid()
 
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "w+")) == NULL)
 		exit_file_error("fopen");
-	fprintf(f_nanoplayer, "%d\n0", (int)getpid());
+	fprintf(f_nanoplayer, "%d\n", (int)getpid());
 	fclose(f_nanoplayer);
 }
 
@@ -55,7 +55,8 @@ void	*sig_manager(void *arg)
 	(void)arg;
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
 		exit_file_error("fopen");
-	while ((buf = fgetc(f_nanoplayer)) != '\n' && buf != EOF);
+	if (!seek_char('\n', f_nanoplayer))
+		exit_file_error("fgetc");
 	buf = fgetc(f_nanoplayer);
 	if (buf == EOF)
 		exit_file_error("fgetc");
@@ -92,17 +93,21 @@ void	init_handler()
 	sigaction(SIGUSR1, init, NULL);
 }
 
-void	send_operation(pid_t pid, char op)
+void	send_operation(pid_t pid, char op, char *arg2)
 {
 	FILE	*f_nanoplayer;
 
-	int c;
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r+")) == NULL)
 		exit_file_error("fopen");
-	while ((c = fgetc(f_nanoplayer)) != '\n' && c != EOF);
-	if (c == EOF)
+	if (!seek_char('\n', f_nanoplayer))
 		exit_file_error("fgetc");
 	fputc(op, f_nanoplayer);
+	if (arg2 != NULL)
+	{
+		fputc('\n', f_nanoplayer);
+		fputs(arg2, f_nanoplayer);
+		fputc('\n', f_nanoplayer);
+	}
 	fclose(f_nanoplayer);
 	kill(pid, SIGUSR1);
 }
