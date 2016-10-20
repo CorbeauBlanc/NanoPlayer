@@ -35,6 +35,8 @@ int main(int argc, char** argv)
 			send_operation(get_pid(), '0');
 		else if (argv[1][1] == 'p')
 			send_operation(get_pid(), '1');
+		else if (argv[1][1] == 's')
+			send_operation(get_pid(), '4');
 	}
 	else
 	{

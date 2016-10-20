@@ -73,7 +73,15 @@ void		music_unpause()
 }
 void		music_next() {}
 void		music_prev() {}
-void		music_stop() {}
+void		music_stop()
+{
+	pthread_mutex_lock(&channel.mut);
+	FMOD_Channel_Stop(channel.val);
+	pthread_mutex_unlock(&channel.mut);
+	pthread_mutex_lock(&time_count.mut_time);
+	time_count.val = 0;
+	pthread_mutex_unlock(&time_count.mut_time);
+}
 void		music_open() {}
 void		music_volume_up() {}
 void		music_volume_down() {}
