@@ -54,6 +54,13 @@ char	*get_line(FILE *stream)
 	return (line);
 }
 
+int		exist(char *path)
+{
+	struct	stat file_stats;
+	
+	return (stat(path, &file_stats) == 0);
+}
+
 int		is_file(char *path)
 {
 	struct	stat file_stats;

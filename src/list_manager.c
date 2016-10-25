@@ -40,3 +40,12 @@ void	insert_cell(t_list **head, char *path)
 			cell->next->prev = cell;
 	}
 }
+
+void	delete_cell(t_list **cell)
+{
+	if (*cell->prev)
+		*cell->prev->next = *cell->next;
+	if (*cell->next)
+		*cell->next->prev = *cell->prev;
+	free(*cell);
+}
