@@ -26,9 +26,9 @@ FMOD_SYSTEM	*create_system()
 	FMOD_RESULT res;
 
 	if ((res = FMOD_System_Create(&system)) != FMOD_OK)
-		exit_FMOD_error(res);
+		exit_FMOD_error(&res);
 	if ((res = FMOD_System_Init(system, 2, FMOD_INIT_NORMAL, NULL)) != FMOD_OK)
-		exit_FMOD_error(res);
+		exit_FMOD_error(&res);
 
 	return (system);
 }
@@ -39,7 +39,7 @@ FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys)
 	FMOD_SOUND	*snd;
 	if ((res = FMOD_System_CreateSound(sys, path,FMOD_2D | FMOD_CREATESTREAM,
 										NULL, &snd)) != FMOD_OK)
-		exit_FMOD_error(res);
+		exit_FMOD_error(&res);
 	
 	return (snd);
 }
@@ -53,7 +53,7 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	pthread_mutex_lock(&channel.mut);
 	if ((res = FMOD_System_PlaySound(sys, snd, NULL, 0, &channel.val))
 		 != FMOD_OK)
-		exit_FMOD_error(res);
+		exit_FMOD_error(&res);
 	pthread_mutex_unlock(&channel.mut);
 	wait_time(lenght);
 }
@@ -69,14 +69,15 @@ void		read_list(t_list *list)
 		exit_FMOD_error(NULL);
 	do
 	{
-		pthread_mutex_lock(&current->mut);
+		pthread_mutex_lock(&current.mut);
 		if (current.status == PLAY  && song)
-			if (sound = create_sound(song->path, system))
+		{
+			if ((sound = create_sound(song->path, system)))
 			{
-				pthread_mutex_unlock(&current->mut);
+				pthread_mutex_unlock(&current.mut);
 				play_sound(sound, system);
 				FMOD_Sound_Release(sound);
-				pthread_mutex_lock(&current->mut);
+				pthread_mutex_lock(&current.mut);
 				if (current.status != PREV)
 					song = song->next;
 			}
@@ -86,9 +87,10 @@ void		read_list(t_list *list)
 				song = song->next;
 				delete_cell(&tmp);
 			}
+		}
 		if (current.status == PREV)
 			song = song->prev;
-		pthread_mutex_unlock(&current->mut);
+		pthread_mutex_unlock(&current.mut);
 	}
 	while (song && current.status != STOP);
 	clear_list(&list);

@@ -78,7 +78,7 @@ t_stopcond	stop;
 t_timemutex time_count;
 t_chanmutex	channel;
 
-void		exit_FMOD_error(FMOD_RESULT res);
+void		exit_FMOD_error(FMOD_RESULT *res);
 void		exit_proc_error();
 void		exit_file_error(char *fct);
 void		exit_memory_error();
@@ -92,6 +92,8 @@ int			is_dir(char *path);
 int			exist(char *path);
 
 void		insert_cell(t_list **head, char *path);
+void		delete_cell(t_list **cell);
+void		clear_list(t_list **head);
 t_list		*create_list(char **tab);
 
 FMOD_SYSTEM	*create_system();

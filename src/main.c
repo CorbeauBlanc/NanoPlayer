@@ -31,7 +31,7 @@ char	get_operation(char c)
 int		main(int argc, char **argv)
 {
 	char	op;
-	char	**list_path, **tmp;
+//	char	**list_path, **tmp;
 
 	if (argc < 2)
 	{
@@ -50,21 +50,21 @@ int		main(int argc, char **argv)
 		init_handler();
 		write_pid();
 		
-		if (is_file(argv[1]))
-		{
-			insert_cell(&list, argv[1]);
-		}
-		else if (is_dir(argv[1]))
-		{
-			list_path = get_dir_content(argv[1]);
-			tmp = list_path;
-			while(*list_path)
-			{
-				insert_cell(&list, *list_path);
-				list_path++;
-			}
-			free_list_path(&tmp);
-		}
+//		if (is_file(argv[1]))
+//		{
+//			insert_cell(&list, argv[1]);
+//		}
+//		else if (is_dir(argv[1]))
+//		{
+//			list_path = get_dir_content(argv[1]);
+//			tmp = list_path;
+//			while(*list_path)
+//			{
+//				insert_cell(&list, *list_path);
+//				list_path++;
+//			}
+//			free_list_path(&tmp);
+//		}
 		remove("/tmp/nanoplayer");
 	}
 	exit(EXIT_SUCCESS);

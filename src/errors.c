@@ -22,9 +22,9 @@
 
 #include "fmod.h"
 
-void	exit_FMOD_error(FMOD_RESULT res)
+void	exit_FMOD_error(FMOD_RESULT *res)
 {
-	fprintf(stderr, "nanoplayer : FMOD : [%d]\n", res);
+	fprintf(stderr, "nanoplayer : FMOD : [%d]\n", *res);
 	exit(EXIT_FAILURE);
 }
 

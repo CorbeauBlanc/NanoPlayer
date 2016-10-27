@@ -43,10 +43,10 @@ void	insert_cell(t_list **head, char *path)
 
 void	delete_cell(t_list **cell)
 {
-	if (*cell->prev)
-		*cell->prev->next = *cell->next;
-	if (*cell->next)
-		*cell->next->prev = *cell->prev;
+	if ((*cell)->prev)
+		(*cell)->prev->next = (*cell)->next;
+	if ((*cell)->next)
+		(*cell)->next->prev = (*cell)->prev;
 	free(*cell);
 }
 
@@ -56,7 +56,7 @@ void	clear_list(t_list **head)
 	
 	while (*head)
 	{
-		tmp = *head->next;
+		tmp = (*head)->next;
 		delete_cell(head);
 		*head = tmp;
 	}
