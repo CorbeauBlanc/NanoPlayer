@@ -49,3 +49,29 @@ void	delete_cell(t_list **cell)
 		*cell->next->prev = *cell->prev;
 	free(*cell);
 }
+
+void	clear_list(t_list **head)
+{
+	t_list	*tmp;
+	
+	while (*head)
+	{
+		tmp = *head->next;
+		delete_cell(head);
+		*head = tmp;
+	}
+}
+
+t_list	*create_list(char **tab)
+{
+	int		i = -1;
+	t_list	*head = NULL;
+	t_list	*tmp = head;
+	
+	while (tab[++i])
+	{
+		insert_cell(&tmp, tab[i]);
+		tmp = head->next;
+	}
+	return (head);
+}

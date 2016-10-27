@@ -18,6 +18,8 @@
 
 #include "nanoplayer.h"
 
+t_song		current;
+
 FMOD_SYSTEM	*create_system()
 {
 	FMOD_SYSTEM *system;
@@ -56,22 +58,48 @@ void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys)
 	wait_time(lenght);
 }
 
-void		read_list(t_list *song)
+void		read_list(t_list *list)
 {
-	init_handler();
-	FMOD_SYSTEM *system = create_system();
-	FMOD_SOUND *sound = create_sound(song->path, system);
-
-	play_sound(sound, system);
+	FMOD_SYSTEM *system;
+	FMOD_SOUND *sound;
+	t_list *tmp, *song;
 	
-	FMOD_Sound_Release(sound);
-
+	song = list;
+	if (!(system = create_system()))
+		exit_FMOD_error(NULL);
+	do
+	{
+		pthread_mutex_lock(&current->mut);
+		if (current.status == PLAY  && song)
+			if (sound = create_sound(song->path, system))
+			{
+				pthread_mutex_unlock(&current->mut);
+				play_sound(sound, system);
+				FMOD_Sound_Release(sound);
+				pthread_mutex_lock(&current->mut);
+				if (current.status != PREV)
+					song = song->next;
+			}
+			else
+			{
+				tmp = song;
+				song = song->next;
+				delete_cell(&tmp);
+			}
+		if (current.status == PREV)
+			song = song->prev;
+		pthread_mutex_unlock(&current->mut);
+	}
+	while (song && current.status != STOP);
+	clear_list(&list);
 	FMOD_System_Close(system);
 	FMOD_System_Release(system);
 }
 
 void		music_pause()
 {
+	if (!exist("/tmp/nanoplayer"))
+		exit_instance_error();
 	pthread_mutex_lock(&channel.mut);
 	FMOD_Channel_SetPaused(channel.val, TRUE);
 	pthread_mutex_unlock(&channel.mut);
@@ -79,15 +107,34 @@ void		music_pause()
 
 void		music_unpause()
 {
+	if (!exist("/tmp/nanoplayer"))
+		exit_instance_error();
 	pthread_mutex_lock(&channel.mut);
 	FMOD_Channel_SetPaused(channel.val, FALSE);
 	pthread_mutex_unlock(&channel.mut);
 	count(NULL);
 }
-void		music_next() {}
-void		music_prev() {}
+void		music_next()
+{
+	pthread_mutex_lock(&current.mut);
+	music_stop();
+	current.status = NEXT;
+	pthread_mutex_unlock(&current.mut);
+}
+void		music_prev()
+{
+	pthread_mutex_lock(&current.mut);
+	music_stop();
+	current.status = PREV;
+	pthread_mutex_unlock(&current.mut);
+}
 void		music_stop()
 {
+	if (!exist("/tmp/nanoplayer"))
+		exit_instance_error();
+	pthread_mutex_lock(&current.mut);
+	current.status = STOP;
+	pthread_mutex_unlock(&current.mut);
 	pthread_mutex_lock(&channel.mut);
 	FMOD_Channel_Stop(channel.val);
 	pthread_mutex_unlock(&channel.mut);
@@ -95,13 +142,18 @@ void		music_stop()
 	time_count.val = 0;
 	pthread_mutex_unlock(&time_count.mut_time);
 }
-void		music_open() {}
+void		music_open()
+{
+	
+}
 void		music_volume()
 {
 	FILE	*f_nanoplayer;
 	float	amount;
 	char	*line;
 	
+	if (!exist("/tmp/nanoplayer"))
+		exit_instance_error();
 	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
 		exit_file_error("fopen");
 	seek_char('\n', f_nanoplayer);

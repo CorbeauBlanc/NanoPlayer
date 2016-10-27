@@ -18,8 +18,6 @@
 
 #include "nanoplayer.h"
 
-t_list	*list;
-
 char	get_operation(char c)
 {
 	char	tab[2][7] = {{'u','p','n','b','s','o','v'},
@@ -47,8 +45,11 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
+		if (exist("/tmp/nanoplayer"))
+			exit_instance_error();
+		init_handler();
 		write_pid();
-		list = NULL;
+		
 		if (is_file(argv[1]))
 		{
 			insert_cell(&list, argv[1]);

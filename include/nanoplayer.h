@@ -64,8 +64,13 @@ typedef struct		s_list
 	char			*path;
 	struct s_list	*prev;
 	struct s_list	*next;
-	pthread_mutex_t	mut;
 }					t_list;
+
+typedef struct		s_song
+{
+	pthread_mutex_t	mut;
+	t_action		status;
+}					t_song;
 
 typedef struct		sigaction	t_sigaction;
 
@@ -78,13 +83,16 @@ void		exit_proc_error();
 void		exit_file_error(char *fct);
 void		exit_memory_error();
 void		exit_thread_error();
+void		exit_instance_error();
 
 int			seek_char(char c, FILE *stream);
 char		*get_line(FILE *stream);
 int			is_file(char *path);
 int			is_dir(char *path);
+int			exist(char *path);
 
 void		insert_cell(t_list **head, char *path);
+t_list		*create_list(char **tab);
 
 FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);

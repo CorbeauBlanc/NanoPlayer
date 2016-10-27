@@ -52,3 +52,9 @@ void	exit_thread_error()
 	perror("nanoplayer : pthread_create ");
 	exit(EXIT_FAILURE);
 }
+
+void	exit_instance_error()
+{
+	fprintf(stderr, "Error : no instance currently running");
+	exit(EXIT_FAILURE);	
+}
