@@ -13,6 +13,14 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
+        <gdb_signals>
+          <gdb_signal gdb_signame="SIGUSR1"
+                      gdb_caught="false"
+                      gdb_caught_by_default="true"/>
+          <gdb_signal gdb_signame="SIGUSR2"
+                      gdb_caught="false"
+                      gdb_caught_by_default="true"/>
+        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>
@@ -25,8 +33,10 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique/Divers</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>"${OUTPUT_PATH}" ~/Musique/Divers</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

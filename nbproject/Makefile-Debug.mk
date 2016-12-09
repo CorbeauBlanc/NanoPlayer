@@ -36,6 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/errors.o \
+	${OBJECTDIR}/src/file_manager.o \
+	${OBJECTDIR}/src/list_manager.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/music_manager.o \
 	${OBJECTDIR}/src/proc_manager.o \
@@ -70,6 +72,16 @@ ${OBJECTDIR}/src/errors.o: src/errors.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/errors.o src/errors.c
+
+${OBJECTDIR}/src/file_manager.o: src/file_manager.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/file_manager.o src/file_manager.c
+
+${OBJECTDIR}/src/list_manager.o: src/list_manager.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Iinclude -Iinclude/fmod -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/list_manager.o src/list_manager.c
 
 ${OBJECTDIR}/src/main.o: src/main.c
 	${MKDIR} -p ${OBJECTDIR}/src

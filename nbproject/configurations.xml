@@ -5,7 +5,6 @@
       <logicalFolder name="include" displayName="include" projectFiles="true">
         <logicalFolder name="fmod" displayName="fmod" projectFiles="true">
           <itemPath>include/fmod/fmod.h</itemPath>
-          <itemPath>include/fmod/fmod.hpp</itemPath>
           <itemPath>include/fmod/fmod_codec.h</itemPath>
           <itemPath>include/fmod/fmod_common.h</itemPath>
           <itemPath>include/fmod/fmod_dsp.h</itemPath>
@@ -19,6 +18,8 @@
     <logicalFolder name="f1" displayName="Sources" projectFiles="true">
       <logicalFolder name="src" displayName="src" projectFiles="true">
         <itemPath>src/errors.c</itemPath>
+        <itemPath>src/file_manager.c</itemPath>
+        <itemPath>src/list_manager.c</itemPath>
         <itemPath>src/main.c</itemPath>
         <itemPath>src/music_manager.c</itemPath>
         <itemPath>src/proc_manager.c</itemPath>
@@ -45,7 +46,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -75,8 +76,6 @@
       </compileType>
       <item path="include/fmod/fmod.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="include/fmod/fmod.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="include/fmod/fmod_codec.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/fmod/fmod_common.h" ex="false" tool="3" flavor2="0">
@@ -92,6 +91,10 @@
       <item path="include/nanoplayer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/errors.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/file_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/list_manager.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -144,8 +147,6 @@
       </compileType>
       <item path="include/fmod/fmod.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="include/fmod/fmod.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="include/fmod/fmod_codec.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/fmod/fmod_common.h" ex="false" tool="3" flavor2="0">
@@ -161,6 +162,10 @@
       <item path="include/nanoplayer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/errors.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/file_manager.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/list_manager.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/main.c" ex="false" tool="0" flavor2="0">
       </item>

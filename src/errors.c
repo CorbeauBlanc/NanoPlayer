@@ -16,39 +16,70 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
-#include "fmod.h"
 
-void	exit_FMOD_error(FMOD_RESULT res)
+#include "fmod.h"
+#include "nanoplayer.h"
+
+void	exit_FMOD_error(FMOD_RESULT *res)
 {
-	fprintf(stderr, "NanoPlayer : FMOD : [%d]\n", res);
+	fprintf(stderr, "nanoplayer : FMOD : [%d]\n", *res);
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_proc_error()
 {
-	char	*err = (errno == ENOMEM ? "Not enough space" :
-									"Resource temporarily unavailable");
-	fprintf(stderr, "NanoPlayer : fork : %s\n", err);
+	perror("nanoplayer : fork ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_file_error(char *fct)
 {
-	fprintf(stderr, "NanoPlayer : %s : %d\n", fct, errno);
+	fprintf(stderr, "nanoplayer : %s ", fct);
+	perror(":");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_memory_error()
 {
-	fprintf(stderr, "NanoPlayer : malloc : %d\n", errno);
+	perror("nanoplayer : malloc ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_thread_error()
 {
-	fprintf(stderr, "NanoPlayer : pthread_create : %d\n", errno);
+	perror("nanoplayer : pthread_create ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
+}
+
+void	exit_instance_error()
+{
+	fprintf(stderr, "Error : no instance currently running");
+	remove("/tmp/nanoplayer");
+	exit(EXIT_FAILURE);	
+}
+
+void	exit_arguments_error()
+{
+	fprintf(stderr, "nanoplayer : Not enough arguments");
+	remove("/tmp/nanoplayer");
+	exit(EXIT_FAILURE);
+}
+
+void	*FMOD_error_log(FMOD_RESULT *res)
+{
+	FILE *log;
+
+	if (!(log = fopen("~/.np_log", "a")))
+		exit_file_error("fopen");
+	fprintf(log, "nanoplayer : FMOD : [%d]\n", *res);
+	fclose(log);
+	return (NULL);
 }

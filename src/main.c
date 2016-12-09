@@ -16,44 +16,60 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#define _POSIX_SOURCE
-#include <sys/stat.h>
 #include "nanoplayer.h"
 
-int main(int argc, char** argv)
+static char	get_operation(char c)
 {
-	struct stat file_stats;
+	char	tab[2][7] = {{'u','p','n','b','s','o','v'},
+						{'0','1','2','3','4','5','6'}};
+	int		i = -1;
+	
+	while(tab[0][++i] != c);
+	return (tab[1][i]);
+}
 
-	if (argc < 2)
+void		create_new_instance(char *path)
+{
+	t_list	*list;
+	
+	if (is_dir(path))
+		list = create_list(get_dir_content(path));
+	else if (is_file(path))
+		insert_cell(&list, path);
+	else
+		exit(EXIT_FAILURE);
+	if (!list)
 	{
-		fprintf(stderr, "NanoPlayer : Not enough arguments");
+		fprintf(stderr,
+			"NanoPlayer : The directory is empty or the file is corrupted");
+		remove("/tmp/nanoplayer");
 		exit(EXIT_FAILURE);
 	}
+	init_handler();
+	write_pid();
+	read_list(list);
+}
+
+int			main(int argc, char **argv)
+{
+	char	op;
+
+	if (argc < 2)
+		exit_arguments_error();
 	if (argv[1][0] == '-')
 	{
-		if (argv[1][1] == 'u')
-			send_operation(get_pid(), '0');
-		else if (argv[1][1] == 'p')
-			send_operation(get_pid(), '1');
-		else if (argv[1][1] == 's')
-			send_operation(get_pid(), '4');
+		op = get_operation(argv[1][1]);
+		send_operation(get_pid(), op, argc > 2 ? argv[2] : NULL);
 	}
 	else
 	{
-		if (stat(argv[1], &file_stats) < 0)
-		exit_file_error("stat");
-		if (S_ISREG(file_stats.st_mode))
+		if (exist("/tmp/nanoplayer"))
 		{
-			write_pid();
-			init_handler();
-			FMOD_SYSTEM *system = create_system();
-			FMOD_SOUND *sound = create_sound(argv[1], system);
-
-			play_sound(sound, system);
-
-			FMOD_System_Close(system);
-			FMOD_System_Release(system);
+			fprintf(stderr, "Error : an instance is already running\n");
+			fprintf(stderr, "Use -o <path> to open a new file/directory");
+			exit(EXIT_FAILURE);
 		}
+		create_new_instance(argv[1]);
 		remove("/tmp/nanoplayer");
 	}
 	exit(EXIT_SUCCESS);
