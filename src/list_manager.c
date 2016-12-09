@@ -65,17 +65,18 @@ void		delete_cell(t_list **cell)
 	if ((*cell)->next)
 		(*cell)->next->prev = (*cell)->prev;
 	free(*cell);
+	*cell = NULL;
 }
 
 void		clear_list(t_list **head)
 {
-	t_list	*tmp;
+	t_list	**tmp;
 	
 	while (*head)
 	{
-		tmp = (*head)->next;
-		delete_cell(head);
-		*head = tmp;
+		tmp = head;
+		*head = (*head)->next;
+		delete_cell(tmp);
 	}
 }
 
@@ -85,10 +86,11 @@ t_list	*create_list(char **tab)
 	t_list	*head = NULL;
 	t_list	**tmp = &head;
 	
-	while (tab[++i])
+	while (tab && tab[++i])
 	{
 		insert_cell(tmp, tab[i]);
-		tmp = &(head->next);
+		if ((*tmp)->next)
+			tmp = &((*tmp)->next);
 	}
 	return (head);
 }

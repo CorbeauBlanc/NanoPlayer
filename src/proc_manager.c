@@ -64,32 +64,48 @@ void	*sig_manager(void *arg)
 	op = buf - '0';
 	tab = init_tab_operations();
 	while (++i != 8 && tab[i]->action != op);
-	if (tab[i]->action == op)
+	if (i != 8 && tab[i]->action == op)
 		tab[i]->function();
 	else
 		exit(EXIT_FAILURE);
 	free_tab_operations(&tab);
-	return (NULL);
+	pthread_exit(NULL);
 }
 
 void	sig_handler(int sig)
 {
-	pthread_t	*manager = NULL;
+	pthread_t	*manager;
 	
 	(void)sig;
+	if (!(manager = malloc(sizeof(pthread_t))))
+		exit_memory_error();
 	if (pthread_create(manager, NULL, sig_manager, NULL) == -1)
 		exit_thread_error();
 }
 
+void	kill_handler(int sig)
+{
+	(void)sig;
+	remove("/tmp/nanoplayer");
+	exit(EXIT_FAILURE);
+}
+
 void	init_handler()
 {
-	t_sigaction *init;
+	t_sigaction *init, *kill;
 	if (!(init = (t_sigaction*)malloc(sizeof(t_sigaction))))
 		exit_memory_error();
 	init->sa_handler = &sig_handler;
 	init->sa_flags = 0;
 	sigemptyset(&init->sa_mask);
 	sigaction(SIGUSR1, init, NULL);
+	
+	if (!(kill = (t_sigaction*)malloc(sizeof(t_sigaction))))
+		exit_memory_error();
+	kill->sa_handler = &kill_handler;
+	kill->sa_flags = 0;
+	sigemptyset(&kill->sa_mask);
+	sigaction(SIGKILL, kill, NULL);
 }
 
 void	send_operation(pid_t pid, char op, char *arg2)

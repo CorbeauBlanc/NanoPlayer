@@ -18,7 +18,7 @@
 
 #include "nanoplayer.h"
 
-char	get_operation(char c)
+static char	get_operation(char c)
 {
 	char	tab[2][7] = {{'u','p','n','b','s','o','v'},
 						{'0','1','2','3','4','5','6'}};
@@ -28,17 +28,34 @@ char	get_operation(char c)
 	return (tab[1][i]);
 }
 
-int		main(int argc, char **argv)
+void		create_new_instance(char *path)
 {
-	char	op;
-//	char	**list_path, **tmp;
 	t_list	*list;
-
-	if (argc < 2)
+	
+	if (is_dir(path))
+		list = create_list(get_dir_content(path));
+	else if (is_file(path))
+		insert_cell(&list, path);
+	else
+		exit(EXIT_FAILURE);
+	if (!list)
 	{
-		fprintf(stderr, "NanoPlayer : Not enough arguments");
+		fprintf(stderr,
+			"NanoPlayer : The directory is empty or the file is corrupted");
+		remove("/tmp/nanoplayer");
 		exit(EXIT_FAILURE);
 	}
+	init_handler();
+	write_pid();
+	read_list(list);
+}
+
+int			main(int argc, char **argv)
+{
+	char	op;
+
+	if (argc < 2)
+		exit_arguments_error();
 	if (argv[1][0] == '-')
 	{
 		op = get_operation(argv[1][1]);
@@ -47,34 +64,12 @@ int		main(int argc, char **argv)
 	else
 	{
 		if (exist("/tmp/nanoplayer"))
-			exit_instance_error();
-		
-		list = create_list(get_dir_content(argv[1]));
-		while (list)
 		{
-			printf("- %s\n", list->path);
-			list = list->next;
+			fprintf(stderr, "Error : an instance is already running\n");
+			fprintf(stderr, "Use -o <path> to open a new file/directory");
+			exit(EXIT_FAILURE);
 		}
-		return (0);
-		
-		init_handler();
-		write_pid();
-		
-//		if (is_file(argv[1]))
-//		{
-//			insert_cell(&list, argv[1]);
-//		}
-//		else if (is_dir(argv[1]))
-//		{
-//			list_path = get_dir_content(argv[1]);
-//			tmp = list_path;
-//			while(*list_path)
-//			{
-//				insert_cell(&list, *list_path);
-//				list_path++;
-//			}
-//			free_list_path(&tmp);
-//		}
+		create_new_instance(argv[1]);
 		remove("/tmp/nanoplayer");
 	}
 	exit(EXIT_SUCCESS);

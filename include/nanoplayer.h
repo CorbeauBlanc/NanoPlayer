@@ -79,45 +79,50 @@ t_stopcond	stop;
 t_timemutex time_count;
 t_chanmutex	channel;
 
-void		exit_FMOD_error(FMOD_RESULT *res);
-void		exit_proc_error();
+void		exit_arguments_error();
 void		exit_file_error(char *fct);
-void		exit_memory_error();
-void		exit_thread_error();
+void		exit_FMOD_error(FMOD_RESULT *res);
 void		exit_instance_error();
+void		exit_memory_error();
+void		exit_proc_error();
+void		exit_thread_error();
 
-int			seek_char(char c, FILE *stream);
-char		*get_line(FILE *stream);
-int			is_file(char *path);
-int			is_dir(char *path);
 int			exist(char *path);
+char		*get_line(FILE *stream);
+int			is_dir(char *path);
+int			is_file(char *path);
+int			seek_char(char c, FILE *stream);
 
-void		insert_cell(t_list **head, char *path);
-void		delete_cell(t_list **cell);
 void		clear_list(t_list **head);
 t_list		*create_list(char **tab);
+void		delete_cell(t_list **cell);
+void		insert_cell(t_list **head, char *path);
 
-FMOD_SYSTEM	*create_system();
 FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys);
-void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
-t_operation	**init_tab_operations();
+FMOD_SYSTEM	*create_system();
 void		free_tab_operations(t_operation	***tab);
-void		music_pause();
-void		music_unpause();
+t_operation	**init_tab_operations();
+
 void		music_next();
+void		music_open();
+void		music_pause();
 void		music_prev();
 void		music_stop();
-void		music_open();
+void		music_unpause();
 void		music_volume();
+void		play_sound(FMOD_SOUND *snd, FMOD_SYSTEM *sys);
+void		read_list(t_list *list);
 
 void		*count(void *arg);
-void		wait_time(unsigned int lenght);
-void		write_pid(void);
-void		init_handler(void);
-pid_t		get_pid();
-void		send_operation(pid_t pid, char op, char *arg2);
 void		free_list_path(char ***list);
 char		**get_dir_content(char *path);
+pid_t		get_pid();
+void		init_handler(void);
+void		send_operation(pid_t pid, char op, char *arg2);
+void		wait_time(unsigned int lenght);
+void		write_pid(void);
+
+void		create_new_instance(char *path);
 
 #endif /* NANOPLAYER_H */
 

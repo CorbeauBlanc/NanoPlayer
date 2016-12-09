@@ -25,12 +25,14 @@
 void	exit_FMOD_error(FMOD_RESULT *res)
 {
 	fprintf(stderr, "nanoplayer : FMOD : [%d]\n", *res);
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_proc_error()
 {
 	perror("nanoplayer : fork ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
@@ -38,23 +40,34 @@ void	exit_file_error(char *fct)
 {
 	fprintf(stderr, "nanoplayer : %s ", fct);
 	perror("");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_memory_error()
 {
 	perror("nanoplayer : malloc ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_thread_error()
 {
 	perror("nanoplayer : pthread_create ");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_instance_error()
 {
 	fprintf(stderr, "Error : no instance currently running");
+	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);	
+}
+
+void	exit_arguments_error()
+{
+	fprintf(stderr, "NanoPlayer : Not enough arguments");
+	remove("/tmp/nanoplayer");
+	exit(EXIT_FAILURE);
 }
