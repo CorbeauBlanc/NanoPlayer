@@ -5,7 +5,6 @@
       <logicalFolder name="include" displayName="include" projectFiles="true">
         <logicalFolder name="fmod" displayName="fmod" projectFiles="true">
           <itemPath>include/fmod/fmod.h</itemPath>
-          <itemPath>include/fmod/fmod.hpp</itemPath>
           <itemPath>include/fmod/fmod_codec.h</itemPath>
           <itemPath>include/fmod/fmod_common.h</itemPath>
           <itemPath>include/fmod/fmod_dsp.h</itemPath>
@@ -47,7 +46,7 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -76,8 +75,6 @@
         </linkerTool>
       </compileType>
       <item path="include/fmod/fmod.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="include/fmod/fmod.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/fmod/fmod_codec.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -149,8 +146,6 @@
         </linkerTool>
       </compileType>
       <item path="include/fmod/fmod.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="include/fmod/fmod.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/fmod/fmod_codec.h" ex="false" tool="3" flavor2="0">
       </item>

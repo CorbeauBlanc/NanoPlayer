@@ -32,6 +32,7 @@ int		main(int argc, char **argv)
 {
 	char	op;
 //	char	**list_path, **tmp;
+	t_list	*list;
 
 	if (argc < 2)
 	{
@@ -47,6 +48,15 @@ int		main(int argc, char **argv)
 	{
 		if (exist("/tmp/nanoplayer"))
 			exit_instance_error();
+		
+		list = create_list(get_dir_content(argv[1]));
+		while (list)
+		{
+			printf("- %s\n", list->path);
+			list = list->next;
+		}
+		return (0);
+		
 		init_handler();
 		write_pid();
 		

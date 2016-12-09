@@ -18,20 +18,37 @@
 
 #include "nanoplayer.h"
 
-void	insert_cell(t_list **head, char *path)
+static char	*strndup(const char *s1, long len)
+{
+	long	i;
+	char	*str;
+
+	if (!s1)
+		return (NULL);
+	if (!(str = (char*)malloc(len + 1)))
+		return (NULL);
+	i = -1;
+	while (++i < len)
+		str[i] = s1[i];
+	str[i] = '\0';
+	return (str);
+}
+
+
+void		insert_cell(t_list **head, char *path)
 {
 	t_list	*cell;
 	
 	if (!(cell = (t_list*)malloc(sizeof(t_list))))
 		exit_memory_error();
-	cell->path = path;
-	if (*head)
+	cell->path = strndup(path, strlen(path));
+	if (head && !*head)
 	{
-		*head = cell;
 		cell->next = NULL;
 		cell->prev = NULL;
+		*head = cell;
 	}
-	else
+	else if (head)
 	{
 		cell->next = (*head)->next;
 		(*head)->next = cell;
@@ -41,7 +58,7 @@ void	insert_cell(t_list **head, char *path)
 	}
 }
 
-void	delete_cell(t_list **cell)
+void		delete_cell(t_list **cell)
 {
 	if ((*cell)->prev)
 		(*cell)->prev->next = (*cell)->next;
@@ -50,7 +67,7 @@ void	delete_cell(t_list **cell)
 	free(*cell);
 }
 
-void	clear_list(t_list **head)
+void		clear_list(t_list **head)
 {
 	t_list	*tmp;
 	
@@ -66,12 +83,12 @@ t_list	*create_list(char **tab)
 {
 	int		i = -1;
 	t_list	*head = NULL;
-	t_list	*tmp = head;
+	t_list	**tmp = &head;
 	
 	while (tab[++i])
 	{
-		insert_cell(&tmp, tab[i]);
-		tmp = head->next;
+		insert_cell(tmp, tab[i]);
+		tmp = &(head->next);
 	}
 	return (head);
 }

@@ -84,6 +84,8 @@ void		read_list(t_list *list)
 			else
 			{
 				tmp = song;
+				if (song == list)
+					list = song->next;
 				song = song->next;
 				delete_cell(&tmp);
 			}

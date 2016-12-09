@@ -108,7 +108,7 @@ char	**get_dir_content(char *path)
 {
 	t_dirent	**list_entries;
 	char		**list_path;
-	int			nbr_entries, i;
+	int			nbr_entries, i, len;
 	
 	nbr_entries = scandir(path, &list_entries, file_selector, alphasort);
 	if (nbr_entries < 0)
@@ -118,11 +118,13 @@ char	**get_dir_content(char *path)
 	i = -1;
 	while(++i < nbr_entries)
 	{
-		if (!(list_path[i] = (char*)malloc(strlen(path) + 
-											strlen(list_entries[i]->d_name))))
+		len = strlen(path) + strlen(list_entries[i]->d_name);
+		if (!(list_path[i] = (char*)malloc(len + 2)))
 			exit_memory_error();
-		strcpy(list_path[i], path);
-		strcpy(list_path[i], list_entries[i]->d_name);
+		strncpy(list_path[i], path, len);
+		if (path[strlen(path) - 1] != '/')
+			list_path[i][strlen(path)] = '/';
+		strncat(list_path[i], list_entries[i]->d_name, len);
 	}
 	list_path[i] = NULL;
 	free_list_entries(&list_entries, nbr_entries);
