@@ -38,7 +38,7 @@ FMOD_SOUND	*create_sound(char* path, FMOD_SYSTEM *sys)
 	FMOD_SOUND	*snd;
 	if ((res = FMOD_System_CreateSound(sys, path,FMOD_2D | FMOD_CREATESTREAM,
 										NULL, &snd)) != FMOD_OK)
-		return (NULL);
+		return ((FMOD_SOUND*)FMOD_error_log(&res));
 	return (snd);
 }
 
@@ -159,7 +159,7 @@ void		music_open()
 	FILE	*f_nanoplayer;
 	
 	music_stop();
-	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
+	if (!(f_nanoplayer = fopen("/tmp/nanoplayer", "r")))
 		exit_file_error("fopen");
 	seek_char('\n', f_nanoplayer);
 	seek_char('\n', f_nanoplayer);
@@ -174,7 +174,7 @@ void		music_volume()
 	
 	if (!exist("/tmp/nanoplayer"))
 		exit_instance_error();
-	if ((f_nanoplayer = fopen("/tmp/nanoplayer", "r")) == NULL)
+	if (!(f_nanoplayer = fopen("/tmp/nanoplayer", "r")))
 		exit_file_error("fopen");
 	seek_char('\n', f_nanoplayer);
 	seek_char('\n', f_nanoplayer);

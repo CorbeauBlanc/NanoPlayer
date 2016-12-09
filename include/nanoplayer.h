@@ -86,6 +86,7 @@ void		exit_instance_error();
 void		exit_memory_error();
 void		exit_proc_error();
 void		exit_thread_error();
+void		*FMOD_error_log(FMOD_RESULT *res);
 
 int			exist(char *path);
 char		*get_line(FILE *stream);

@@ -21,6 +21,7 @@
 #include <errno.h>
 
 #include "fmod.h"
+#include "nanoplayer.h"
 
 void	exit_FMOD_error(FMOD_RESULT *res)
 {
@@ -39,7 +40,7 @@ void	exit_proc_error()
 void	exit_file_error(char *fct)
 {
 	fprintf(stderr, "nanoplayer : %s ", fct);
-	perror("");
+	perror(":");
 	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
@@ -67,7 +68,18 @@ void	exit_instance_error()
 
 void	exit_arguments_error()
 {
-	fprintf(stderr, "NanoPlayer : Not enough arguments");
+	fprintf(stderr, "nanoplayer : Not enough arguments");
 	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
+}
+
+void	*FMOD_error_log(FMOD_RESULT *res)
+{
+	FILE *log;
+
+	if (!(log = fopen("~/.np_log", "a")))
+		exit_file_error("fopen");
+	fprintf(log, "nanoplayer : FMOD : [%d]\n", *res);
+	fclose(log);
+	return (NULL);
 }

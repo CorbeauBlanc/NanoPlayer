@@ -87,7 +87,7 @@ int		file_selector(const t_dirent *entry)
 void	free_list_entries(t_dirent ***list, int nb)
 {
 	int i = -1;
-	
+
 	while (++i < nb)
 		free((*list)[i]);
 	free(*list);
