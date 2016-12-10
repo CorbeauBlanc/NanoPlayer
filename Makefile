@@ -136,12 +136,15 @@ help: .help-post
 
 
 install: ${NAME}
+	@clear
+	@echo
 	@echo "Installing..."
 	@sudo cp ${NAME} /usr/bin
 	@sudo chmod 731 /usr/bin/${NAME}
 	@sudo cp lib/libfmod.so /usr/lib
 	@echo "Done."
 	@echo "Enjoy ${NAME}"
+	@echo
 
 ${NAME}: ${OBJS}
 	@echo "Building ${NAME} v${VNUMBER}..."
