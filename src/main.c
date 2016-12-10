@@ -30,7 +30,7 @@ static char	get_operation(char c)
 
 void		create_new_instance(char *path)
 {
-	t_list	*list;
+	t_list	*list = NULL;
 	
 	if (is_dir(path))
 		list = create_list(get_dir_content(path));
@@ -66,7 +66,7 @@ int			main(int argc, char **argv)
 		if (exist("/tmp/nanoplayer"))
 		{
 			fprintf(stderr, "Error : an instance is already running\n");
-			fprintf(stderr, "Use -o <path> to open a new file/directory");
+			fprintf(stderr, "Use -o <path> to open a new file or directory\n");
 			exit(EXIT_FAILURE);
 		}
 		create_new_instance(argv[1]);

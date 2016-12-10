@@ -33,11 +33,11 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique/Divers</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique/Divers/monsieur.mp3 </runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ~/Musique/Divers</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" ~/Musique/Divers/monsieur.mp3</runcommand>
+        <runcommand>"${OUTPUT_PATH}" ~/Musique/Divers</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

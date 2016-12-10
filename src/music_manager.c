@@ -77,6 +77,9 @@ void		read_list(t_list *list)
 	song = list;
 	if (!(system = create_system()))
 		exit_FMOD_error(NULL);
+	pthread_mutex_lock(&current.mut);
+	current.status = PLAY;
+	pthread_mutex_unlock(&current.mut);
 	do
 	{
 		pthread_mutex_lock(&current.mut);
