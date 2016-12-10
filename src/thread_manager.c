@@ -18,6 +18,22 @@
 
 #include "nanoplayer.h"
 
+pthread_t	*new_thread()
+{
+	++threads.size;
+	if (!(threads.tab = realloc(threads.tab, threads.size)))
+		exit_memory_error();
+	return (&threads.tab[threads.size - 1]);
+}
+
+void		wait_threads()
+{
+	int	i = -1;
+	
+	while(++i < threads.size)
+		pthread_join(threads.tab[i], NULL);
+}
+
 void		*count(void *arg)
 {
 	FMOD_BOOL		playing = TRUE;
@@ -55,4 +71,6 @@ void		wait_time(unsigned int val)
 		pthread_cond_wait(&stop.cond_stop, &stop.mut_stop);
 		pthread_mutex_unlock(&stop.mut_stop);
 	}
+	int null = 0;
+	(void)null;
 }

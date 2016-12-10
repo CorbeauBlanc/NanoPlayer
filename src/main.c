@@ -63,6 +63,7 @@ int			main(int argc, char **argv)
 	}
 	else
 	{
+		threads.size = 0;
 		if (exist("/tmp/nanoplayer"))
 		{
 			fprintf(stderr, "Error : an instance is already running\n");
@@ -70,8 +71,10 @@ int			main(int argc, char **argv)
 			exit(EXIT_FAILURE);
 		}
 		create_new_instance(argv[1]);
+		wait_threads();
 		remove("/tmp/nanoplayer");
 	}
+	
 	exit(EXIT_SUCCESS);
 }
 

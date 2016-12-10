@@ -55,6 +55,18 @@ typedef struct		s_chanmutex
 	pthread_mutex_t	mut;
 }					t_chanmutex;
 
+typedef struct		s_sysmutex
+{
+	FMOD_SYSTEM		*sys;
+	pthread_mutex_t	mut;
+}					t_sysmutex;
+
+typedef struct		s_threads
+{
+	pthread_t		*tab;
+	int				size;
+}					t_threads;
+
 typedef	struct		s_operation
 {
 	t_action		action;
@@ -79,6 +91,7 @@ typedef struct		sigaction	t_sigaction;
 t_stopcond	stop;
 t_timemutex time_count;
 t_chanmutex	channel;
+t_threads	threads;
 
 void		exit_arguments_error();
 void		exit_file_error(char *fct);
@@ -120,7 +133,9 @@ void		free_list_path(char ***list);
 char		**get_dir_content(char *path);
 pid_t		get_pid();
 void		init_handler(void);
+pthread_t	*new_thread();
 void		send_operation(pid_t pid, char op, char *arg2);
+void		wait_threads();
 void		wait_time(unsigned int lenght);
 void		write_pid(void);
 

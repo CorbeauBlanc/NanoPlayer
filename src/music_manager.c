@@ -18,7 +18,8 @@
 
 #include "nanoplayer.h"
 
-t_song		current;
+static t_song		current;
+static t_sysmutex	main_system;
 
 FMOD_SYSTEM	*create_system()
 {
@@ -70,12 +71,12 @@ void		stop_sound()
 
 void		read_list(t_list *list)
 {
-	FMOD_SYSTEM *system;
 	FMOD_SOUND *sound;
 	t_list *tmp, *song;
 	
 	song = list;
-	if (!(system = create_system()))
+	pthread_mutex_lock(&main_system.mut);
+	if (!(main_system.sys = create_system()))
 		exit_FMOD_error(NULL);
 	pthread_mutex_lock(&current.mut);
 	current.status = PLAY;
@@ -85,10 +86,10 @@ void		read_list(t_list *list)
 		pthread_mutex_lock(&current.mut);
 		if (current.status == PLAY  && song)
 		{
-			if ((sound = create_sound(song->path, system)))
+			if ((sound = create_sound(song->path, main_system.sys)))
 			{
 				pthread_mutex_unlock(&current.mut);
-				play_sound(sound, system);
+				play_sound(sound, main_system.sys);
 				FMOD_Sound_Release(sound);
 				pthread_mutex_lock(&current.mut);
 				if (current.status != PREV)
@@ -113,8 +114,9 @@ void		read_list(t_list *list)
 	}
 	while (song && current.status != STOP);
 	clear_list(&list);
-	FMOD_System_Close(system);
-	FMOD_System_Release(system);
+	FMOD_System_Close(main_system.sys);
+	FMOD_System_Release(main_system.sys);
+	pthread_mutex_unlock(&main_system.mut);
 }
 
 void		music_pause()

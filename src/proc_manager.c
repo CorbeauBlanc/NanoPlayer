@@ -73,13 +73,9 @@ void	*sig_manager(void *arg)
 }
 
 void	sig_handler(int sig)
-{
-	pthread_t	*manager;
-	
+{	
 	(void)sig;
-	if (!(manager = malloc(sizeof(pthread_t))))
-		exit_memory_error();
-	if (pthread_create(manager, NULL, sig_manager, NULL) == -1)
+	if (pthread_create(new_thread(), NULL, sig_manager, NULL) == -1)
 		exit_thread_error();
 }
 
