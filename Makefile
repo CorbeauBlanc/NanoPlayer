@@ -48,7 +48,22 @@
 MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
+CC=gcc
+CFLAGS=-Wall -Wextra -Werror -std=c11
+LIBS=-Llib -Wl,-rpath,'lib' -lfmod -lpthread
+NAME=nanoplayer
+VNUMBER=0.1
+SRCDIR=src
+INCDIR=include
+OBJDIR=build/Release/GNU-Linux/src
+SRCS=errors.c list_manager.c music_manager.c thread_manager.c file_manager.c main.c proc_manager.c
+OBJS=${SRCS:.c=.o}
+MAKE=/usr/bin/make
 
+.PHONY: install
+
+vpath %c ${SRCDIR}
+vpath %o ${OBJDIR}
 
 # build
 build: .build-post
@@ -118,6 +133,24 @@ help: .help-post
 
 .help-post: .help-impl
 # Add your post 'help' code here...
+
+
+install: ${NAME}
+	@echo "Installing..."
+	@sudo cp ${NAME} /usr/bin
+	@sudo chmod 731 /usr/bin/${NAME}
+	@sudo cp lib/libfmod.so /usr/lib
+	@echo "Done."
+	@echo "Enjoy ${NAME}"
+
+${NAME}: ${OBJS}
+	@echo "Building ${NAME} v${VNUMBER}..."
+	@${CC} $^ -o $@ -I${INCDIR} -I${INCDIR}/fmod ${CFLAGS} ${LIBS}
+	@echo "Done."
+
+%.o: %.c
+	@${CC} $^ -c -I${INCDIR} -I${INCDIR}/fmod ${CFLAGS}
+	@echo "$@ Done."
 
 
 

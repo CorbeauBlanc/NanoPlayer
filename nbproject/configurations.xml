@@ -2,7 +2,7 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="f2" displayName="Headers" projectFiles="true">
-      <logicalFolder name="include" displayName="include" projectFiles="true">
+      <logicalFolder name="include" displayName="includes" projectFiles="true">
         <logicalFolder name="fmod" displayName="fmod" projectFiles="true">
           <itemPath>include/fmod/fmod.h</itemPath>
           <itemPath>include/fmod/fmod_codec.h</itemPath>
@@ -16,7 +16,7 @@
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="f1" displayName="Sources" projectFiles="true">
-      <logicalFolder name="src" displayName="src" projectFiles="true">
+      <logicalFolder name="src" displayName="srcs" projectFiles="true">
         <itemPath>src/errors.c</itemPath>
         <itemPath>src/file_manager.c</itemPath>
         <itemPath>src/list_manager.c</itemPath>
