@@ -4,7 +4,7 @@
  
  Interactions only with command lines, it can work in background (with '&') : call it once to play the music and call it again with different parameters to do other actions.
 
- So far nothing these are implemented :
+ So far these options are implemented :
   * -p : pause the music
   * -u : unpause the music
   * -s : stop the music (and end the process)
@@ -14,7 +14,7 @@
   * -o [path] : open a new file or directory
  
  
- ## Known issues
+## Known issues
  
   If the process is killed (by hitting Ctrl + c for example) it does not delete its temporary file and so it will consider that an instance is always running. Solution : restart your session or (more practical) delete /tmp/nanoplayer.
  
