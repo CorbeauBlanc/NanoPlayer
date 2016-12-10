@@ -60,12 +60,15 @@ void		insert_cell(t_list **head, char *path)
 
 void		delete_cell(t_list **cell)
 {
-	if ((*cell)->prev)
-		(*cell)->prev->next = (*cell)->next;
-	if ((*cell)->next)
-		(*cell)->next->prev = (*cell)->prev;
-	free(*cell);
-	*cell = NULL;
+	if (cell && *cell)
+	{
+		if ((*cell)->prev)
+			(*cell)->prev->next = (*cell)->next;
+		if ((*cell)->next)
+			(*cell)->next->prev = (*cell)->prev;
+		free(*cell);
+		*cell = NULL;
+	}
 }
 
 void		clear_list(t_list **head)
