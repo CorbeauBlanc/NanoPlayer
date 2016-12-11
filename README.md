@@ -18,5 +18,5 @@ Just launch install.sh in a terminal. It will ask you if you want to set a bunch
 
 ## Known issues
  
-  If the process is killed (by hitting Ctrl + c for example) it does not delete its temporary file and so it will consider that an instance is always running. Solution : restart your session or (more practical) delete /tmp/nanoplayer.
+  If the process is killed (by hitting Ctrl + c or with the kill command for example) the program does not delete its temporary file and so it will always consider that an instance is already running. Solution : restart your session or just delete /tmp/nanoplayer.
  
