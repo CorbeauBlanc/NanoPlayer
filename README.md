@@ -13,7 +13,9 @@
   * -v [amount] : change the volume. A positive number increase the volume and a negative one dicrease it
   * -o [path] : open a new file or directory
  
- 
+## Installation
+Just launch install.sh in a terminal. It will ask you if you want to set a bunch of aliases, these are here to make nanoplayer more practical (for example use "next" instead of "nanoplayer -n") so you might want to set them. It's an advice, you do what you want.
+
 ## Known issues
  
   If the process is killed (by hitting Ctrl + c for example) it does not delete its temporary file and so it will consider that an instance is always running. Solution : restart your session or (more practical) delete /tmp/nanoplayer.
