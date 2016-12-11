@@ -7,7 +7,7 @@ case $yn in
 			echo >> ~/.$shell
 			echo "#####- NanoPlayer aliases -#####" >> ~/.$shell
 			echo >> ~/.$shell
-			echo 'function play(){nanoplayer $1}' >> ~/.$shell
+			echo 'function play(){nanoplayer $1 &}' >> ~/.$shell
 			echo 'alias pause="nanoplayer -p"' >> ~/.$shell
 			echo 'alias unpause="nanoplayer -u"' >> ~/.$shell
 			echo 'alias next="nanoplayer -n"' >> ~/.$shell
