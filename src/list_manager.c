@@ -18,7 +18,7 @@
 
 #include "nanoplayer.h"
 
-static char	*strndup(const char *s1, long len)
+static char	*strldup(const char *s1, long len)
 {
 	long	i;
 	char	*str;
@@ -38,10 +38,10 @@ static char	*strndup(const char *s1, long len)
 void		insert_cell(t_list **head, char *path)
 {
 	t_list	*cell;
-	
+
 	if (!(cell = (t_list*)malloc(sizeof(t_list))))
 		exit_memory_error();
-	cell->path = strndup(path, strlen(path));
+	cell->path = strldup(path, strlen(path));
 	if (head && !*head)
 	{
 		cell->next = NULL;
@@ -74,7 +74,7 @@ void		delete_cell(t_list **cell)
 void		clear_list(t_list **head)
 {
 	t_list	**tmp;
-	
+
 	while (*head)
 	{
 		tmp = head;
@@ -88,7 +88,7 @@ t_list	*create_list(char **tab)
 	int		i = -1;
 	t_list	*head = NULL;
 	t_list	**tmp = &head;
-	
+
 	while (tab && tab[++i])
 	{
 		insert_cell(tmp, tab[i]);

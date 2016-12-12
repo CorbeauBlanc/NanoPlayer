@@ -1,7 +1,7 @@
 #
-#  There exist several targets which are by default empty and which can be 
-#  used for execution of your targets. These targets are usually executed 
-#  before and after some main targets. They are: 
+#  There exist several targets which are by default empty and which can be
+#  used for execution of your targets. These targets are usually executed
+#  before and after some main targets. They are:
 #
 #     .build-pre:              called before 'build' target
 #     .build-post:             called after 'build' target
@@ -17,13 +17,13 @@
 #  Targets beginning with '.' are not intended to be called on their own.
 #
 #  Main targets can be executed directly, and they are:
-#  
+#
 #     build                    build a specific configuration
 #     clean                    remove built files from a configuration
 #     clobber                  remove all built files
 #     all                      build all configurations
 #     help                     print help mesage
-#  
+#
 #  Targets .build-impl, .clean-impl, .clobber-impl, .all-impl, and
 #  .help-impl are implemented in nbproject/makefile-impl.mk.
 #
@@ -44,7 +44,7 @@
 # NOCDDL
 
 
-# Environment 
+# Environment
 MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
@@ -60,10 +60,9 @@ SRCS=errors.c list_manager.c music_manager.c thread_manager.c file_manager.c mai
 OBJS=${SRCS:.c=.o}
 MAKE=/usr/bin/make
 
-.PHONY: install
+.PHONY: install mv
 
-vpath %c ${SRCDIR}
-vpath %o ${OBJDIR}
+vpath %.c ${SRCDIR}
 
 # build
 build: .build-post
@@ -135,14 +134,17 @@ help: .help-post
 # Add your post 'help' code here...
 
 
-install: ${NAME}
-	@clear
+install: ${NAME} mv
+	@echo "Removing objects"
+	@rm -f ${OBJS}
 	@echo
-	@echo "Installing..."
-	@sudo cp ${NAME} /usr/bin
-	@sudo chmod 731 /usr/bin/${NAME}
-	@sudo cp lib/libfmod.so /usr/lib
-	@echo "Done."
+	@echo "Enjoy ${NAME}"
+	@echo
+
+install_osx: ${NAME}
+	@echo "Removing objects"
+	@rm -f ${OBJS}
+	@echo
 	@echo "Enjoy ${NAME}"
 	@echo
 
@@ -154,7 +156,6 @@ ${NAME}: ${OBJS}
 %.o: %.c
 	@${CC} $^ -c -I${INCDIR} -I${INCDIR}/fmod ${CFLAGS}
 	@echo "$@ Done."
-
 
 
 # include project implementation makefile

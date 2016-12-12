@@ -2,12 +2,13 @@ clear
 if [ -e /System ]
 then
 	echo "Automatic installation for Mac"
-	echo "==============================="
+	echo "=============================="
 	echo
 	make install_osx
-	sudo cp nanoplayer /usr/bin
-	sudo chmod 731 /usr/bin/nanoplayer
-	sudo cp lib/libfmod.dylib /usr/local/lib
+	cp nanoplayer ~/Applications
+	echo "Installed in ~/Applications"
+	mkdir ~/lib
+	cp lib/libfmod.dylib ~/lib
 else
 	echo "Automatic installation for Linux"
 	echo "================================"

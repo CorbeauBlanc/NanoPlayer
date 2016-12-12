@@ -142,4 +142,3 @@ void		write_pid(void);
 void		create_new_instance(char *path);
 
 #endif /* NANOPLAYER_H */
-

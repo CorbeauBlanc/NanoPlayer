@@ -16,12 +16,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#define _POSIX_SOURCE
-#define _GNU_SOURCE
+
 #include <sys/stat.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <string.h>
+#ifndef __APPLE__
+# define _POSIX_SOURCE
+# define _GNU_SOURCE
+#endif
 
 #include "nanoplayer.h"
 
@@ -41,7 +44,7 @@ char	*get_line(FILE *stream)
 	char	*line;
 	char	buf;
 	int		i = -1;
-	
+
 	if (!(line = (char*)malloc(1)))
 		exit_memory_error();
 	while ((buf = fgetc(stream)) != '\n' && buf != EOF)
@@ -57,14 +60,14 @@ char	*get_line(FILE *stream)
 int		exist(char *path)
 {
 	struct	stat file_stats;
-	
+
 	return (stat(path, &file_stats) == 0);
 }
 
 int		is_file(char *path)
 {
 	struct	stat file_stats;
-	
+
 	if (stat(path, &file_stats) < 0)
 		exit_file_error("stat");
 	return (S_ISREG(file_stats.st_mode));
@@ -73,7 +76,7 @@ int		is_file(char *path)
 int		is_dir(char *path)
 {
 	struct	stat file_stats;
-	
+
 	if (stat(path, &file_stats) < 0)
 		exit_file_error("stat");
 	return (S_ISDIR(file_stats.st_mode));
@@ -109,7 +112,7 @@ char	**get_dir_content(char *path)
 	t_dirent	**list_entries;
 	char		**list_path;
 	int			nbr_entries, i, len;
-	
+
 	nbr_entries = scandir(path, &list_entries, file_selector, alphasort);
 	if (nbr_entries < 0)
 		exit_file_error("scandir");
