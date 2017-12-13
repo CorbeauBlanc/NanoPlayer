@@ -18,6 +18,6 @@ Just launch install.sh in a terminal. It will ask you if you want to set a bunch
 
 ## Known issues
  
-  If the process is killed (by hitting Ctrl + c, with the kill command, or by closing the terminal without doing "nanoplayer -s" for example) the program does not delete its temporary file and so it will always consider that an instance is already running.
+  If the process is killed (by hitting Ctrl + c, with the kill command, or by closing the terminal without doing "nanoplayer -s" for example) the program does not delete its temporary file and so it will always consider that an instance is already running and refuse to launch a new one.
   Solution : logout - login or just delete /tmp/nanoplayer.
  
