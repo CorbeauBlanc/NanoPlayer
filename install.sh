@@ -4,18 +4,12 @@ then
 	echo "Automatic installation for Mac"
 	echo "==============================="
 	echo
-	make install_osx
-	sudo cp nanoplayer /usr/bin
-	sudo chmod 731 /usr/bin/nanoplayer
-	sudo cp lib/libfmod.dylib /usr/local/lib
+	make && make install_osx
 else
 	echo "Automatic installation for Linux"
 	echo "================================"
 	echo
-	make install
-	sudo cp nanoplayer /usr/bin
-	sudo chmod 731 /usr/bin/nanoplayer
-	sudo cp lib/libfmod.so /usr/lib
+	make && make install
 fi
 shell=$(echo $SHELL | cut -d \/ -f 3)
 read -p "Set aliases ? [y/N] " yn

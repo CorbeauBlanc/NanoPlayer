@@ -27,66 +27,9 @@
 # include <sys/stat.h>
 # include <signal.h>
 # include <unistd.h>
-# include <pthread.h>
 # include <string.h>
 
-# include "fmod.h"
-
-typedef enum		e_action
-{
-	PLAY, PAUSE, NEXT, PREV, STOP, OPEN, VOL
-}					t_action;
-
-typedef	struct		s_stopcond
-{
-	pthread_cond_t	cond_stop;
-	pthread_mutex_t	mut_stop;
-}					t_stopcond;
-
-typedef	struct		s_timemutex
-{
-	unsigned int	val;
-	pthread_mutex_t	mut_time;
-}					t_timemutex;
-
-typedef struct		s_chanmutex
-{
-	FMOD_CHANNEL	*val;
-	pthread_mutex_t	mut;
-}					t_chanmutex;
-
-typedef struct		s_sysmutex
-{
-	FMOD_SYSTEM		*sys;
-	pthread_mutex_t	mut;
-}					t_sysmutex;
-
-typedef struct		s_threads
-{
-	pthread_t		*tab;
-	int				size;
-}					t_threads;
-
-typedef	struct		s_operation
-{
-	t_action		action;
-	void			(*function)(void);
-}					t_operation;
-
-typedef struct		s_list
-{
-	char			*path;
-	struct s_list	*prev;
-	struct s_list	*next;
-}					t_list;
-
-typedef struct		s_song
-{
-	pthread_mutex_t	mut;
-	t_action		status;
-}					t_song;
-
-typedef struct		sigaction	t_sigaction;
+# include "structures.h"
 
 t_stopcond	stop;
 t_timemutex time_count;
@@ -100,6 +43,7 @@ void		exit_instance_error();
 void		exit_memory_error();
 void		exit_proc_error();
 void		exit_thread_error();
+void		exit_usage_error();
 void		*FMOD_error_log(FMOD_RESULT *res);
 
 int			exist(char *path);

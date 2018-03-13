@@ -18,20 +18,30 @@
 
 #include "nanoplayer.h"
 
-static char	get_operation(char c)
+static char	get_operation(char *c)
 {
-	char	tab[2][7] = {{'u','p','n','b','s','o','v'},
-						{'0','1','2','3','4','5','6'}};
+	char	tab_char[2][8] = {{'u','p','n','b','s','o','v', 'h'}, {'0','1','2','3','4','5','6', 0}};
+	char	*tab_str[2][8] = {{"play","pause","next","previous","stop","open","volume", "help"}, {"0","1","2","3","4","5","6", ""}};
+	char	ret;
 	int		i = -1;
-	
-	while(tab[0][++i] != c);
-	return (tab[1][i]);
+
+	if (*c == '-')
+	{
+		while(++i < 7 && strcmp(tab_str[0][i], c + 1));
+		ret = i < 7 ? *tab_str[1][i] : 0;
+	}
+	else
+	{
+		while(++i < 7 && tab_char[0][i] != *c);
+		ret = i < 7 ? tab_char[1][i] : 0;
+	}
+	return (ret);
 }
 
 void		create_new_instance(char *path)
 {
 	t_list	*list = NULL;
-	
+
 	if (is_dir(path))
 		list = create_list(get_dir_content(path));
 	else if (is_file(path))
@@ -58,7 +68,8 @@ int			main(int argc, char **argv)
 		exit_arguments_error();
 	if (argv[1][0] == '-')
 	{
-		op = get_operation(argv[1][1]);
+		if (!(op = get_operation(argv[1] + 1)))
+			exit_usage_error();
 		send_operation(get_pid(), op, argc > 2 ? argv[2] : NULL);
 	}
 	else
@@ -67,14 +78,13 @@ int			main(int argc, char **argv)
 		if (exist("/tmp/nanoplayer"))
 		{
 			fprintf(stderr, "Error : an instance is already running\n");
-			fprintf(stderr, "Use -o <path> to open a new file or directory\n");
+			fprintf(stderr, "Use -o|--open <path> to open a new file or directory\n");
 			exit(EXIT_FAILURE);
 		}
 		create_new_instance(argv[1]);
 		wait_threads();
 		remove("/tmp/nanoplayer");
 	}
-	
+
 	exit(EXIT_SUCCESS);
 }
-

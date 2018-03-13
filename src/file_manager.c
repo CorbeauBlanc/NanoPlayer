@@ -22,7 +22,7 @@
 #include <fcntl.h>
 #include <string.h>
 #ifndef __APPLE__
-# define _POSIX_SOURCE
+//# define _POSIX_SOURCE
 # define _GNU_SOURCE
 #endif
 

@@ -51,7 +51,7 @@ void	exit_FMOD_error(FMOD_RESULT *res)
 
 void	exit_proc_error()
 {
-	perror("nanoplayer : fork ");
+	perror("nanoplayer : fork\n");
 	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
@@ -66,29 +66,36 @@ void	exit_file_error(char *fct)
 
 void	exit_memory_error()
 {
-	perror("nanoplayer : malloc ");
+	perror("nanoplayer : malloc\n");
 	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_thread_error()
 {
-	perror("nanoplayer : pthread_create ");
+	perror("nanoplayer : pthread_create\n");
 	remove("/tmp/nanoplayer");
 	exit(EXIT_FAILURE);
 }
 
 void	exit_instance_error()
 {
-	fprintf(stderr, "Error : no instance currently running");
+	fprintf(stderr, "Error : no instance currently running\n");
 	remove("/tmp/nanoplayer");
-	exit(EXIT_FAILURE);	
+	exit(EXIT_FAILURE);
 }
 
 void	exit_arguments_error()
 {
-	fprintf(stderr, "nanoplayer : Not enough arguments");
+	fprintf(stderr, "nanoplayer : Not enough arguments\n");
+	fprintf(stderr, "Usage : nanoplayer -u|--play -p|--pause -n|--next -b|--previous -v|--volume\n");
 	remove("/tmp/nanoplayer");
+	exit(EXIT_FAILURE);
+}
+
+void	exit_usage_error()
+{
+	fprintf(stderr, "Usage : nanoplayer -u|--play -p|--pause -n|--next -b|--previous -v|--volume\n");
 	exit(EXIT_FAILURE);
 }
 
