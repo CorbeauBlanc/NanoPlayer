@@ -31,18 +31,18 @@ case $yn in
 			echo 'Aliases in written in ~/.'$shell
 			echo 'Restart your terminal session to use them.'
 		else
-			echo '~/.'$shell' does not exist. Aliases not written.'
+			echo '~/.'$shell' does not exist. Aliases not set.'
 		fi
 		break;;
 	n ) echo
-		echo "Here are the implemented options :"
+		echo "No aliases are set. Here are the current implemented options :"
 		echo
-		echo ' pause ........................ nanoplayer -p'
-		echo ' unpause ...................... nanoplayer -u'
-		echo ' next song .................... nanoplayer -n'
-		echo ' previous song ................ nanoplayer -b'
-		echo ' stop ......................... nanoplayer -s'
-		echo ' open a new file or directory . nanoplayer -o'
-		echo ' change the volume ............ nanoplayer -v'
+		echo ' pause ........................ nanoplayer -p|--pause'
+		echo ' unpause ...................... nanoplayer -u|--play'
+		echo ' next song .................... nanoplayer -n|--next'
+		echo ' previous song ................ nanoplayer -b|--previous'
+		echo ' stop ......................... nanoplayer -s|--stop'
+		echo ' open a new file or directory . nanoplayer -o|--open'
+		echo ' change the volume ............ nanoplayer -v|--volume'
 		exit;;
 esac

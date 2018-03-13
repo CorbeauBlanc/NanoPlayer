@@ -46,7 +46,7 @@ test_arch:
 
 install:
 	@sudo cp $(TARGETDIR)/$(NAME) $(INSTALLDIR)
-	@sudo chmod 731 /usr/bin/$(TARGETDIR)/$(NAME)
+	@sudo chmod 731 /usr/bin/$(NAME)
 	@sudo cp -H lib/fmod/$(ARCH)/libfmod.so /usr/lib
 	@sudo ldconfig
 
