@@ -33,7 +33,7 @@ typedef struct	dirent	t_dirent;
 int		seek_char(char c, FILE *stream)
 {
 	int		i = 0;
-	char	buf;
+	int		buf;
 	while((buf = fgetc(stream)) != c && buf != EOF)
 		i++;
 	return (i);
@@ -42,7 +42,7 @@ int		seek_char(char c, FILE *stream)
 char	*get_line(FILE *stream)
 {
 	char	*line;
-	char	buf;
+	int		buf;
 	int		i = -1;
 
 	if (!(line = (char*)malloc(1)))
