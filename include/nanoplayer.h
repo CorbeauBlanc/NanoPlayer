@@ -31,10 +31,10 @@
 
 # include "structures.h"
 
-t_stopcond	stop;
-t_timemutex time_count;
-t_chanmutex	channel;
-t_threads	threads;
+extern t_stopcond	stop;
+extern t_timemutex time_count;
+extern t_chanmutex	channel;
+extern t_threads	threads;
 
 void		exit_arguments_error();
 void		exit_file_error(char *fct);
