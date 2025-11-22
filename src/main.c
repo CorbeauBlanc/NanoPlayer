@@ -18,6 +18,11 @@
 
 #include "nanoplayer.h"
 
+t_stopcond	stop;
+t_timemutex time_count;
+t_chanmutex	channel;
+t_threads	threads;
+
 static char	get_operation(char *c)
 {
 	char	tab_char[2][8] = {{'u','p','n','b','s','o','v', 'h'}, {'0','1','2','3','4','5','6', 0}};
