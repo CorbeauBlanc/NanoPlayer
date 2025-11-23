@@ -5,7 +5,7 @@ VNUMBER=0.2
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -Ofast
 MAKE=/usr/bin/make
-ARCH=x86_64
+ARCH=arm
 LIBS=-Llib/fmod/$(ARCH) -Wl,-rpath,'lib' -lfmod -lpthread
 
 SRCDIR=src
@@ -22,7 +22,7 @@ INSTALLDIR=/usr/bin
 
 .PHONY: all install test_arch clean
 
-all: $(TARGETDIR) $(TARGETDIR)/$(NAME)
+all: $(OBJDIR) $(TARGETDIR) $(TARGETDIR)/$(NAME)
 
 $(OBJDIR):
 	mkdir -p $@
@@ -41,13 +41,24 @@ $(TARGETDIR)/$(NAME): $(OBJS)
 
 test_arch:
 	@if ! [ -e lib/fmod/$(ARCH) ];then\
-		echo "error: usable architectures: arm, armhf, x86, x86_64";\
+		echo "error: usable architectures: arm, arm64, x86, x86_64";\
 	fi
 
 install:
 	@sudo cp $(TARGETDIR)/$(NAME) $(INSTALLDIR)
 	@sudo chmod 731 /usr/bin/$(NAME)
 	@sudo cp -H lib/fmod/$(ARCH)/libfmod.so /usr/lib
+	@sudo ldconfig
+
+uninstall:
+	@if [ -e $(INSTALLDIR)/$(NAME) ];then\
+		sudo rm $(INSTALLDIR)/$(NAME);\
+		echo "$(INSTALLDIR)/$(NAME) removed";\
+	fi
+	@if [ -e /usr/lib/libfmod.so ];then\
+		sudo rm /usr/lib/libfmod.so;\
+		echo "/usr/lib/libfmod.so removed";\
+	fi
 	@sudo ldconfig
 
 clean:
