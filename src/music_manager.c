@@ -26,7 +26,7 @@ FMOD_SYSTEM	*create_system()
 	FMOD_SYSTEM *system;
 	FMOD_RESULT res;
 
-	if ((res = FMOD_System_Create(&system)) != FMOD_OK)
+	if ((res = FMOD_System_Create(&system, FMOD_VERSION)) != FMOD_OK)
 		exit_FMOD_error(&res);
 	if ((res = FMOD_System_Init(system, 10, FMOD_INIT_NORMAL, NULL)) != FMOD_OK)
 		exit_FMOD_error(&res);

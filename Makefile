@@ -5,7 +5,7 @@ VNUMBER=0.2
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -Ofast
 MAKE=/usr/bin/make
-ARCH=arm
+ARCH=x86_64
 LIBS=-Llib/fmod/$(ARCH) -Wl,-rpath,'lib' -lfmod -lpthread
 
 SRCDIR=src

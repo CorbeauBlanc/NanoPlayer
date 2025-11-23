@@ -32,13 +32,19 @@ void	putnbr_fd(int n, int fd)
 	l = (long)n;
 	if (n < 0)
 	{
-		write(fd, "-", 1);
+		if (write(fd, "-", 1) < 0)
+		{
+			exit(EXIT_FAILURE);
+		}
 		l = -l;
 	}
 	if (n > 9 || n < -9)
 		putnbr_fd((int)(l / 10), fd);
 	c = '0' + (l % 10);
-	write(fd, &c, 1);
+	if(write(fd, &c, 1) < 0)
+	{
+		exit(EXIT_FAILURE);
+	}
 }
 
 
@@ -107,7 +113,10 @@ void	*FMOD_error_log(FMOD_RESULT *res)
 	md = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 	if (!(fd = open("~/.np_log", O_CREAT | O_WRONLY | O_APPEND, md)))
 		exit_file_error("open");
-	write(fd, "nanoplayer : FMOD : ", 20);
+	if (write(fd, "nanoplayer : FMOD : ", 20) < 0)
+	{
+	  exit(EXIT_FAILURE);
+	}
 	putnbr_fd(*res, fd);
 	close(fd);
 	return (NULL);
